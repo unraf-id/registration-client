@@ -40,6 +40,7 @@ public class UiFieldDTO {
 	private List<Validator> validators;
 	private String fieldCategory;
 	private String alignmentGroup;
+	private HashMap<String, String> alignmentGroupLabel;
 	private RequiredOnExpr visible;
 	@JsonProperty("required")
 	private boolean isRequired;

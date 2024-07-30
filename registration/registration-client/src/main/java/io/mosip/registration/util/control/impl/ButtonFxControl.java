@@ -105,28 +105,28 @@ public class ButtonFxControl extends FxControl {
 		String code = selectedButton.getId().replaceAll(uiFieldDTO.getId(), "");
 
 		switch (this.uiFieldDTO.getType()) {
-		case RegistrationConstants.SIMPLE_TYPE:
-			List<SimpleDto> values = new ArrayList<SimpleDto>();
-			List<String> toolTipText = new ArrayList<>();
-			for (String langCode : getRegistrationDTo().getSelectedLanguagesByApplicant()) {
-				Optional<GenericDto> result = masterSyncService.getFieldValues(uiFieldDTO.getSubType(), langCode, false).stream()
+			case RegistrationConstants.SIMPLE_TYPE:
+				List<SimpleDto> values = new ArrayList<SimpleDto>();
+				List<String> toolTipText = new ArrayList<>();
+				for (String langCode : getRegistrationDTo().getSelectedLanguagesByApplicant()) {
+					Optional<GenericDto> result = masterSyncService.getFieldValues(uiFieldDTO.getSubType(), langCode, false).stream()
+							.filter(b -> b.getCode().equalsIgnoreCase(code)).findFirst();
+					if (result.isPresent()) {
+						values.add(new SimpleDto(langCode, result.get().getName()));
+						toolTipText.add(result.get().getName());
+					}
+				}
+				selectedButton.setTooltip(new Tooltip(String.join(RegistrationConstants.SLASH, toolTipText)));
+				getRegistrationDTo().addDemographicField(uiFieldDTO.getId(), values);
+				getRegistrationDTo().SELECTED_CODES.put(uiFieldDTO.getId()+"Code", code);
+				break;
+			default:
+				Optional<GenericDto> result = masterSyncService.getFieldValues(uiFieldDTO.getSubType(), getRegistrationDTo().getSelectedLanguagesByApplicant().get(0), false).stream()
 						.filter(b -> b.getCode().equalsIgnoreCase(code)).findFirst();
 				if (result.isPresent()) {
-					values.add(new SimpleDto(langCode, result.get().getName()));
-					toolTipText.add(result.get().getName());
+					getRegistrationDTo().addDemographicField(uiFieldDTO.getId(), result.get().getName());
+					getRegistrationDTo().SELECTED_CODES.put(uiFieldDTO.getId()+"Code", code);
 				}
-			}
-			selectedButton.setTooltip(new Tooltip(String.join(RegistrationConstants.SLASH, toolTipText)));
-			getRegistrationDTo().addDemographicField(uiFieldDTO.getId(), values);
-			getRegistrationDTo().SELECTED_CODES.put(uiFieldDTO.getId()+"Code", code);
-			break;
-		default:
-			Optional<GenericDto> result = masterSyncService.getFieldValues(uiFieldDTO.getSubType(), getRegistrationDTo().getSelectedLanguagesByApplicant().get(0), false).stream()
-					.filter(b -> b.getCode().equalsIgnoreCase(code)).findFirst();
-			if (result.isPresent()) {
-				getRegistrationDTo().addDemographicField(uiFieldDTO.getId(), result.get().getName());
-				getRegistrationDTo().SELECTED_CODES.put(uiFieldDTO.getId()+"Code", code);
-			}
 		}
 	}
 
@@ -158,8 +158,8 @@ public class ButtonFxControl extends FxControl {
 			val.forEach(genericDto -> {
 				Button button = new Button(genericDto.getName());
 				button.setId(uiFieldDTO.getId() + genericDto.getCode());
-				hBox.setSpacing(10);
-				hBox.setPadding(new Insets(10, 10, 10, 10));
+				hBox.setSpacing(5);
+				hBox.setPadding(new Insets(10, 4, 10, 4));
 				button.getStyleClass().addAll(residence, buttonStyle);
 				hBox.getChildren().add(button);
 				setListener(button);

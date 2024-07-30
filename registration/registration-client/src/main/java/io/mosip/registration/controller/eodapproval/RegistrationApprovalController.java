@@ -249,8 +249,6 @@ public class RegistrationApprovalController extends BaseController implements In
 				new PropertyValueFactory<RegistrationApprovalVO, String>(RegistrationConstants.EOD_PROCESS_ID));
 		date.setCellValueFactory(
 				new PropertyValueFactory<RegistrationApprovalVO, String>(RegistrationConstants.EOD_PROCESS_DATE));
-//		statusComment.setCellValueFactory(new PropertyValueFactory<RegistrationApprovalVO, Image>(
-//				RegistrationConstants.EOD_PROCESS_STATUSCOMMENT));
 		acknowledgementFormPath.setCellValueFactory(new PropertyValueFactory<RegistrationApprovalVO, String>(
 				RegistrationConstants.EOD_PROCESS_ACKNOWLEDGEMENTFORMPATH));
 		operatorId.setCellValueFactory(new PropertyValueFactory<RegistrationApprovalVO, String>(

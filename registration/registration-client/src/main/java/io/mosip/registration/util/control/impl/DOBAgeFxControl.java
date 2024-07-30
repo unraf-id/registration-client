@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package io.mosip.registration.util.control.impl;
 
@@ -28,6 +28,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Insets;
 
 /**
  * @author M1044402
@@ -69,7 +70,7 @@ public class DOBAgeFxControl extends FxControl {
 
 		HBox dobHBox = new HBox();
 		dobHBox.setId(uiFieldDTO.getId() + RegistrationConstants.HBOX);
-		dobHBox.setSpacing(10);
+		dobHBox.setSpacing(5);
 
 		String mandatorySuffix = getMandatorySuffix(uiFieldDTO);
 
@@ -78,7 +79,7 @@ public class DOBAgeFxControl extends FxControl {
 				.getBundle(langCode, RegistrationConstants.LABELS);
 
 		VBox ageVBox = new VBox();
-		ageVBox.setPrefWidth(390);
+		/*ageVBox.setPrefWidth(390);*/
 
 		List<String> labels = new ArrayList<>();
 		getRegistrationDTo().getSelectedLanguagesByApplicant().forEach(lCode -> {
@@ -110,7 +111,7 @@ public class DOBAgeFxControl extends FxControl {
 		label.setMinWidth(Region.USE_PREF_SIZE);
 		label.setAlignment(Pos.CENTER);
 		dobHBox.getChildren().add(label);
-		
+
 		/** Add Age Field */
 		dobHBox.getChildren().add(addDateTextField(uiFieldDTO, RegistrationConstants.AGE_FIELD,
 				resourceBundle.getString(RegistrationConstants.AGE_FIELD)));
@@ -121,12 +122,13 @@ public class DOBAgeFxControl extends FxControl {
 //						"YEARS, RegistrationConstants.DEMOGRAPHIC_FIELD_LABEL, true,
 //						ageVBox.getWidth()));
 		ageVBox.getChildren().add(dobHBox);
+		/*ageVBox.setMargin(dobHBox, new Insets(0, 30, 0, 0));*/
 
 		/** Validation message (Invalid/wrong,,etc,.) */
 		ageVBox.getChildren().add(getLabel(uiFieldDTO.getId() + RegistrationConstants.ERROR_MSG, null,
 				RegistrationConstants.DemoGraphicFieldMessageLabel, false, ageVBox.getPrefWidth()));
 
-		dobHBox.prefWidthProperty().bind(ageVBox.widthProperty());
+		/*dobHBox.prefWidthProperty().bind(ageVBox.widthProperty());*/
 
 		changeNodeOrientation(ageVBox, langCode);
 		return ageVBox;
@@ -236,7 +238,7 @@ public class DOBAgeFxControl extends FxControl {
 	}
 
 	private TextField getTextField(String id, String titleText, String demographicTextfield, double prefWidth,
-			boolean isDisable) {
+								   boolean isDisable) {
 
 		/** Text Field */
 		TextField textField = new TextField();

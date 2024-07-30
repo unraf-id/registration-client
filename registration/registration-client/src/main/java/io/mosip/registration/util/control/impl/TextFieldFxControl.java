@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package io.mosip.registration.util.control.impl;
 
@@ -9,6 +9,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import io.mosip.registration.controller.*;
+import javafx.geometry.Insets;
+import javafx.scene.layout.*;
 import org.springframework.context.ApplicationContext;
 
 import io.mosip.commons.packet.dto.packet.SimpleDto;
@@ -40,11 +42,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
+/*import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.VBox;*/
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -62,20 +64,20 @@ public class TextFieldFxControl extends FxControl {
 	private static String loggerClassName = " Text Field Control Type Class";
 
 	private Validations validation;
-	
+
 	private DemographicChangeActionHandler demographicChangeActionHandler;
-	
+
 	private Transliteration<String> transliteration;
-	
+
 	private Node keyboardNode;
-	
+
 	private static double xPosition;
 	private static double yPosition;
-	
+
 	private FXComponents fxComponents;
-	
+
 	private GenericController genericController;
-	
+
 	public TextFieldFxControl() {
 		ApplicationContext applicationContext = ClientApplication.getApplicationContext();
 		validation = applicationContext.getBean(Validations.class);
@@ -123,7 +125,7 @@ public class TextFieldFxControl extends FxControl {
 					.addDemographicField(uiFieldDTO.getId(),
 							((TextField) getField(
 									uiFieldDTO.getId() + registrationDTO.getSelectedLanguagesByApplicant().get(0)))
-											.getText());
+									.getText());
 
 		}
 	}
@@ -138,7 +140,7 @@ public class TextFieldFxControl extends FxControl {
 			if (uiFieldDTO.isTransliterate()) {
 				transliterate(textField, textField.getId().substring(textField.getId().length() - RegistrationConstants.LANGCODE_LENGTH, textField.getId().length()));
 			}
-			if (isValid()) {				
+			if (isValid()) {
 				setData(null);
 
 				// handling other handlers
@@ -180,7 +182,7 @@ public class TextFieldFxControl extends FxControl {
 					vBox.getChildren().add(createTextBox(langCode,true));
 					vBox.getChildren().add(getLabel(uiFieldDTO.getId() + langCode + RegistrationConstants.MESSAGE, null,
 							RegistrationConstants.DemoGraphicFieldMessageLabel, false, simpleTypeVBox.getPrefWidth()));
-					
+
 					HBox hyperLinkHBox = new HBox();
 					hyperLinkHBox.setVisible(false);
 					hyperLinkHBox.setPrefWidth(simpleTypeVBox.getPrefWidth());
@@ -206,11 +208,11 @@ public class TextFieldFxControl extends FxControl {
 			default:
 				String langCode = getRegistrationDTo().getSelectedLanguagesByApplicant().get(0);
 				getRegistrationDTo().getSelectedLanguagesByApplicant().forEach(langcode -> {
-							labels.add(this.uiFieldDTO.getLabel().get(langcode));});
+					labels.add(this.uiFieldDTO.getLabel().get(langcode));});
 				vBox.getChildren().add(createTextBox(langCode,false));
 				vBox.getChildren().add(getLabel(uiFieldDTO.getId() + langCode + RegistrationConstants.MESSAGE,
 						null, RegistrationConstants.DemoGraphicFieldMessageLabel, false, simpleTypeVBox.getPrefWidth()));
-				
+
 				HBox hyperLinkHBox = new HBox();
 				hyperLinkHBox.setVisible(false);
 				hyperLinkHBox.setId(uiFieldDTO.getId() + langCode + "HyperlinkHBox");
@@ -235,9 +237,10 @@ public class TextFieldFxControl extends FxControl {
 
 		fieldTitle.setText(String.join(RegistrationConstants.SLASH, labels)	+ getMandatorySuffix(uiFieldDTO));
 		simpleTypeVBox.getChildren().add(vBox);
+		simpleTypeVBox.setMargin(vBox, new Insets(0, 30, 0, 0));
 		return simpleTypeVBox;
 	}
-	
+
 	private Hyperlink getHyperlink(String id, String langCode, String titleText, String styleClass, boolean isVisible) {
 		/** Field Title */
 		Hyperlink hyperLink = new Hyperlink();
@@ -250,7 +253,7 @@ public class TextFieldFxControl extends FxControl {
 			hyperLink.setOnAction(event -> {
 				auditFactory.audit(AuditEvent.REG_BLOCKLISTED_WORD_ACCEPTED, Components.REG_DEMO_DETAILS, SessionContext.userId(),
 						AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
-				
+
 				TextField textField = (TextField) getField(uiFieldDTO.getId() + langCode);
 				if (getRegistrationDTo().BLOCKLISTED_CHECK.containsKey(uiFieldDTO.getId())) {
 					List<String> words = getRegistrationDTo().BLOCKLISTED_CHECK.get(uiFieldDTO.getId()).getWords();
@@ -277,7 +280,7 @@ public class TextFieldFxControl extends FxControl {
 			hyperLink.setOnAction(event -> {
 				auditFactory.audit(AuditEvent.REG_BLOCKLISTED_WORD_REJECTED, Components.REG_DEMO_DETAILS, SessionContext.userId(),
 						AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
-				
+
 				TextField textField = (TextField) getField(uiFieldDTO.getId() + langCode);
 				textField.setText(RegistrationConstants.EMPTY);
 				getField(uiFieldDTO.getId() + langCode + "HyperlinkHBox").setVisible(false);
@@ -294,7 +297,8 @@ public class TextFieldFxControl extends FxControl {
 	private HBox createTextBox(String langCode, boolean isSimpleType) {
 		HBox textFieldHBox = new HBox();
 		TextField textField = getTextField(langCode, uiFieldDTO.getId() + langCode, false);
-		textField.setMinWidth(400);
+		//textField.setMinWidth(400);
+		textFieldHBox.setHgrow(textField, Priority.ALWAYS);
 		textFieldHBox.getChildren().add(textField);
 
 		if(isSimpleType) {
@@ -304,7 +308,7 @@ public class TextFieldFxControl extends FxControl {
 
 			VirtualKeyboard keyBoard = new VirtualKeyboard(langCode);
 			keyBoard.changeControlOfKeyboard(textField);
-			
+
 			ImageView keyBoardImgView = getKeyBoardImage();
 			keyBoardImgView.setId(langCode);
 			keyBoardImgView.visibleProperty().bind(textField.visibleProperty());
@@ -369,7 +373,7 @@ public class TextFieldFxControl extends FxControl {
 			}
 
 			getField(uiFieldDTO.getId() + langCode + "HyperlinkHBox").setVisible(false);
-			
+
 			if (validation.validateTextField((Pane) getNode(), textField, uiFieldDTO.getId(), true, langCode)) {
 				if (validation.validateForBlockListedWords((Pane) getNode(), textField, uiFieldDTO.getId(), true, langCode)) {
 					FXUtils.getInstance().setTextValidLabel((Pane) getNode(), textField, uiFieldDTO.getId());
@@ -387,7 +391,7 @@ public class TextFieldFxControl extends FxControl {
 				isValid = false;
 				break;
 			}
-			
+
 			if(!this.uiFieldDTO.getType().equalsIgnoreCase(RegistrationConstants.SIMPLE_TYPE)) {
 				break; //not required to iterate further
 			}
@@ -417,14 +421,14 @@ public class TextFieldFxControl extends FxControl {
 
 	@Override
 	public boolean isEmpty() {
-		
+
 		List<String> langCodes = new LinkedList<String>();
 		if(!this.uiFieldDTO.getType().equalsIgnoreCase(RegistrationConstants.SIMPLE_TYPE)) {
 			langCodes.add(getRegistrationDTo().getSelectedLanguagesByApplicant().get(0));
 		} else {
 			langCodes.addAll(getRegistrationDTo().getSelectedLanguagesByApplicant());
 		}
-		
+
 		return langCodes.stream().allMatch(langCode -> {
 			TextField textField = (TextField) getField(uiFieldDTO.getId() + langCode);
 			return textField.getText().trim().isEmpty();
@@ -500,7 +504,7 @@ public class TextFieldFxControl extends FxControl {
 	 * @param event
 	 * @param keyBoard
 	 * @param langCode
-	 * @param textField 
+	 * @param textField
 	 *
 	 */
 	public void setFocusOnField(MouseEvent event, VirtualKeyboard keyBoard, String langCode, TextField textField) {
@@ -523,7 +527,7 @@ public class TextFieldFxControl extends FxControl {
 					runtimeException.getMessage() + ExceptionUtils.getStackTrace(runtimeException));
 		}
 	}
-	
+
 	private void openKeyBoard(VirtualKeyboard keyBoard, String langCode, TextField textField, Node parentNode) {
 		if (genericController.getKeyboardStage() != null)  {
 			genericController.getKeyboardStage().close();
@@ -550,10 +554,10 @@ public class TextFieldFxControl extends FxControl {
 		ColumnConstraints columnConstraint3 = new ColumnConstraints();
 		columnConstraint3.setPercentWidth(10);
 		columnConstraints.addAll(columnConstraint1, columnConstraint2, columnConstraint3);
-	
+
 		return gridPane;
 	}
-	
+
 	private void openKeyBoardPopUp() {
 		try {
 			Stage keyBoardStage = new Stage();
@@ -579,28 +583,28 @@ public class TextFieldFxControl extends FxControl {
 			validation.generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.UNABLE_LOAD_SCAN_POPUP));
 		}
 	}
-	
+
 	private static void makeDraggable(final Stage stage, final Node node) {
-	    node.setOnMousePressed(mouseEvent -> {
-	    	// record a distance for the drag and drop operation.
-	    	xPosition = stage.getX() - mouseEvent.getScreenX();
-	    	yPosition = stage.getY() - mouseEvent.getScreenY();
-	    	node.setCursor(Cursor.MOVE);
-	    });
-	    node.setOnMouseReleased(mouseEvent -> node.setCursor(Cursor.HAND));
-	    node.setOnMouseDragged(mouseEvent -> {
-	    	stage.setX(mouseEvent.getScreenX() + xPosition);
-	    	stage.setY(mouseEvent.getScreenY() + yPosition);
-	    });
-	    node.setOnMouseEntered(mouseEvent -> {
-	    	if (!mouseEvent.isPrimaryButtonDown()) {
-	    		node.setCursor(Cursor.HAND);
-	    	}
-	    });
-	    node.setOnMouseExited(mouseEvent -> {
-	    	if (!mouseEvent.isPrimaryButtonDown()) {
-	    		node.setCursor(Cursor.DEFAULT);
-	    	}
-	    });
+		node.setOnMousePressed(mouseEvent -> {
+			// record a distance for the drag and drop operation.
+			xPosition = stage.getX() - mouseEvent.getScreenX();
+			yPosition = stage.getY() - mouseEvent.getScreenY();
+			node.setCursor(Cursor.MOVE);
+		});
+		node.setOnMouseReleased(mouseEvent -> node.setCursor(Cursor.HAND));
+		node.setOnMouseDragged(mouseEvent -> {
+			stage.setX(mouseEvent.getScreenX() + xPosition);
+			stage.setY(mouseEvent.getScreenY() + yPosition);
+		});
+		node.setOnMouseEntered(mouseEvent -> {
+			if (!mouseEvent.isPrimaryButtonDown()) {
+				node.setCursor(Cursor.HAND);
+			}
+		});
+		node.setOnMouseExited(mouseEvent -> {
+			if (!mouseEvent.isPrimaryButtonDown()) {
+				node.setCursor(Cursor.DEFAULT);
+			}
+		});
 	}
 }
