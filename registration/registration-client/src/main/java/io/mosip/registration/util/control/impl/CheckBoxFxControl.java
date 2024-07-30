@@ -5,6 +5,7 @@ import java.util.List;
 
 import io.mosip.registration.controller.ClientApplication;
 import io.mosip.registration.util.common.DemographicChangeActionHandler;
+import javafx.geometry.Insets;
 import org.springframework.context.ApplicationContext;
 
 
@@ -66,7 +67,7 @@ public class CheckBoxFxControl extends FxControl {
 		CheckBox checkBox = getCheckBox(fieldName,
 				String.join(RegistrationConstants.SLASH, labels) + getMandatorySuffix(uiFieldDTO),
 				RegistrationConstants.DEMOGRAPHIC_TEXTFIELD, prefWidth, false);
-
+		simpleTypeVBox.setMargin(checkBox, new Insets(0, 30, 0, 0));
 		setListener(checkBox);
 		simpleTypeVBox.getChildren().add(checkBox);
 		simpleTypeVBox.getChildren().add(getLabel(uiFieldDTO.getId() + RegistrationConstants.ERROR_MSG, null,
@@ -76,7 +77,7 @@ public class CheckBoxFxControl extends FxControl {
 	}
 
 	private CheckBox getCheckBox(String id, String titleText, String demographicTextfield, double prefWidth,
-			boolean isDisable) {
+								 boolean isDisable) {
 		CheckBox checkBox = new CheckBox(titleText);
 		checkBox.setId(id);
 		//checkBox.getStyleClass().add(RegistrationConstants.DEMOGRAPHIC_TEXTFIELD);
@@ -92,10 +93,10 @@ public class CheckBoxFxControl extends FxControl {
 	public void setData(Object data) {
 		auditFactory.audit(AuditEvent.REG_CHECKBOX_FX_CONTROL, Components.REG_DEMO_DETAILS, SessionContext.userId(),
 				AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
-		
+
 		CheckBox checkBox = (CheckBox) getField(uiFieldDTO.getId());
 		getRegistrationDTo().addDemographicField(uiFieldDTO.getId(), checkBox == null ? "N"
-								: checkBox.isSelected() ? "Y" : "N");
+				: checkBox.isSelected() ? "Y" : "N");
 	}
 
 	@Override

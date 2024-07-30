@@ -185,6 +185,9 @@ public class BaseController {
 	private ScanPopUpViewController scanPopUpViewController;
 
 	@Autowired
+	private QrCodePopUpViewController qrCodePopUpViewController;
+
+	@Autowired
 	private RegistrationApprovalController registrationApprovalController;
 
 	@Autowired
@@ -402,7 +405,11 @@ public class BaseController {
 					&& registrationApprovalController.getPrimaryStage().isShowing()) {
 				alertStage.initOwner(registrationApprovalController.getPrimaryStage());
 				alertTypeCheck(title, context, alertStage);
-			} else {
+			}  else if (qrCodePopUpViewController.getPopupStage() != null
+					&& qrCodePopUpViewController.getPopupStage().isShowing()) {
+				alertStage.initOwner(qrCodePopUpViewController.getPopupStage());
+				alertTypeCheck(title, context, alertStage);
+			}else {
 				alertStage.initOwner(fXComponents.getStage());
 				alertTypeCheck(title, context, alertStage);
 			}
@@ -1381,7 +1388,6 @@ public class BaseController {
 			}
 		}
 	}
-
 	public Map<Entry<String, String>, Map<String, List<List<String>>>> getOnboardUserMap() {
 		Map<Entry<String, String>, Map<String, List<List<String>>>> mapToProcess = new HashMap<>();
 

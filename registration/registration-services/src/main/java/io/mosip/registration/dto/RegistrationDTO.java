@@ -58,13 +58,14 @@ public class RegistrationDTO {
 	private boolean isUpdateUINNonBiometric;
 	private boolean isNameNotUpdated;
 	private List<String> defaultUpdatableFieldGroups;
+	private Integer selectedFaceAttempt;
 
 	private Map<String, Object> demographics = new HashMap<>();
 	private Map<String, Object> defaultDemographics = new LinkedHashMap<>();
 	private Map<String, DocumentDto> documents = new HashMap<>();
 	private Map<String, BiometricsDto> biometrics = new HashMap<>();
 	private Map<String, BiometricsException> biometricExceptions = new HashMap<>();
-
+	private Map<String, BiometricsDto> faceBiometrics = new HashMap<>();
 	private List<BiometricsDto> supervisorBiometrics = new ArrayList<>();
 	private List<BiometricsDto> officerBiometrics = new ArrayList<>();
 	private Map<String, BiometricsException> osBioExceptions = new HashMap<>();

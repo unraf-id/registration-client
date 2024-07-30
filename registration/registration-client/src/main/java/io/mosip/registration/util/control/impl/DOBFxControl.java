@@ -203,7 +203,7 @@ public class DOBFxControl extends FxControl {
 	}
 
 	private TextField getTextField(String id, String titleText, String demographicTextfield, double prefWidth,
-			boolean isDisable) {
+								   boolean isDisable) {
 
 		/** Text Field */
 		TextField textField = new TextField();

@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import io.mosip.registration.controller.ClientApplication;
 import io.mosip.registration.dao.MasterSyncDao;
+import javafx.geometry.Insets;
 import org.springframework.context.ApplicationContext;
 
 import io.mosip.registration.dto.mastersync.GenericDto;
@@ -97,6 +98,7 @@ public class DropDownFxControl extends FxControl {
 		//simpleTypeVBox.setPrefHeight(95);
 		simpleTypeVBox.setSpacing(5);
 		simpleTypeVBox.setId(fieldName + RegistrationConstants.VBOX);
+		//simpleTypeVBox.setMinWidth(450);
 
 		/** Title label */
 		Label fieldTitle = getLabel(uiFieldDTO.getId() + RegistrationConstants.LABEL, "",
@@ -111,12 +113,14 @@ public class DropDownFxControl extends FxControl {
 		String titleText = String.join(RegistrationConstants.SLASH, labels) + getMandatorySuffix(uiFieldDTO);
 		ComboBox<GenericDto> comboBox = getComboBox(fieldName, titleText, RegistrationConstants.DOC_COMBO_BOX,
 				simpleTypeVBox.getPrefWidth(), false);
+		comboBox.setMaxWidth(Double.MAX_VALUE);
 		simpleTypeVBox.getChildren().add(comboBox);
+		simpleTypeVBox.setMargin(comboBox, new Insets(0, 30, 0, 0));
 
 		comboBox.setOnMouseExited(event -> {
 			getField(uiFieldDTO.getId() + RegistrationConstants.MESSAGE).setVisible(false);
 			if(comboBox.getTooltip()!=null) {
-			comboBox.getTooltip().hide();
+				comboBox.getTooltip().hide();
 			}
 		});
 
@@ -167,7 +171,7 @@ public class DropDownFxControl extends FxControl {
 	}
 
 	private <T> ComboBox<GenericDto> getComboBox(String id, String titleText, String stycleClass, double prefWidth,
-			boolean isDisable) {
+												 boolean isDisable) {
 		ComboBox<GenericDto> field = new ComboBox<GenericDto>();
 		StringConverter<T> uiRenderForComboBox = FXUtils.getInstance().getStringConverterForComboBox();
 		field.setId(id);
@@ -227,8 +231,8 @@ public class DropDownFxControl extends FxControl {
 			appComboBox.getStyleClass().removeIf((s) -> {
 				return s.equals("demographicComboboxFocused");
 			});
-			if(!isValid) { 
-				appComboBox.getStyleClass().add("demographicComboboxFocused"); 
+			if(!isValid) {
+				appComboBox.getStyleClass().add("demographicComboboxFocused");
 			}
 		}
 		return isValid;
@@ -253,7 +257,7 @@ public class DropDownFxControl extends FxControl {
 					Optional<GenericDto> result = getPossibleValues(langCode).stream()
 							.filter(b -> b.getCode().equals(selectedCode)).findFirst();
 					if (result.isPresent()) {
-						
+
 						toolTipText.add(result.get().getName());
 					}
 				}
@@ -326,7 +330,7 @@ public class DropDownFxControl extends FxControl {
 			comboBox.getItems().addAll(val);
 
 			new ComboBoxAutoComplete<GenericDto>(comboBox);
-			
+
 			comboBox.hide();
 
 		}

@@ -13,9 +13,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
-
-<BorderPane id="loginScreen" prefHeight="553.0" prefWidth="523.0" styleClass="loginBorderPaneStyle" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="io.mosip.registration.controller.auth.LoginController">
-  <bottom>
+<BorderPane id="loginScreen" prefHeight="553.0" prefWidth="523.0" styleClass="loginBorderPaneStyle" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.mosip.registration.controller.auth.LoginController">
+<bottom>
     <HBox id="footer-section">
       <children>
         <Label text="%mosip.io" />

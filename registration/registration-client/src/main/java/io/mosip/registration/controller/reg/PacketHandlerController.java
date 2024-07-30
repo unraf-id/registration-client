@@ -79,7 +79,7 @@ import lombok.NonNull;
 
 /**
  * Class for Registration Packet operations
- * 
+ *
  * @author Sravya Surampalli
  * @since 1.0.0
  *
@@ -103,7 +103,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 	@FXML
 	private Label lastPreRegPacketDownloadedTime;
-	
+
 	@FXML
 	private ImageView inProgressImage;
 
@@ -231,7 +231,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 	@Autowired
 	private GenericController genericController;
-	
+
 	@Autowired
 	private LanguageSelectionController languageSelectionController;
 
@@ -284,13 +284,13 @@ public class PacketHandlerController extends BaseController implements Initializ
 		try {
 			setImagesOnHover();
 
-			setImage(syncDataImageView, RegistrationConstants.SYNC_IMG);	
+			setImage(syncDataImageView, RegistrationConstants.SYNC_IMG);
 			setImage(downloadPreRegDataImageView, RegistrationConstants.DWLD_PRE_REG_DATA_IMG);
-			setImage(uploadPacketImageView, RegistrationConstants.UPDATE_OPERATOR_BIOMETRICS_IMG);		
+			setImage(uploadPacketImageView, RegistrationConstants.UPDATE_OPERATOR_BIOMETRICS_IMG);
 			setImage(remapImageView, RegistrationConstants.SYNC_IMG);
 			setImage(checkUpdatesImageView, RegistrationConstants.DWLD_PRE_REG_DATA_IMG);
 			setImage(eodApprovalImageView, RegistrationConstants.PENDING_APPROVAL_IMG);
-			setImage(reRegistrationImageView, RegistrationConstants.RE_REGISTRATION_IMG);		
+			setImage(reRegistrationImageView, RegistrationConstants.RE_REGISTRATION_IMG);
 			setImage(viewReportsImageView, RegistrationConstants.VIEW_REPORTS_IMG);
 			setImage(tickMarkImageView, RegistrationConstants.TICK_IMG);
 			setImage(updateOperatorBiometricsImageView, RegistrationConstants.UPDATE_OPERATOR_BIOMETRICS_IMG);
@@ -334,10 +334,10 @@ public class PacketHandlerController extends BaseController implements Initializ
 	private void setImagesOnHover() {
 		syncDataPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue) {
-				
+
 				setImage(syncDataImageView, RegistrationConstants.SYNC_DATA_FOCUSED_IMG);
 			} else {
-				
+
 				setImage(syncDataImageView, RegistrationConstants.SYNC_IMG);
 			}
 		});
@@ -366,9 +366,9 @@ public class PacketHandlerController extends BaseController implements Initializ
 		});
 		reRegistrationPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue) {
-				setImage(reRegistrationImageView, RegistrationConstants.RE_REGISTRATION_FOCUSED_IMG);	
+				setImage(reRegistrationImageView, RegistrationConstants.RE_REGISTRATION_FOCUSED_IMG);
 			} else {
-				setImage(reRegistrationImageView, RegistrationConstants.RE_REGISTRATION_IMG);	
+				setImage(reRegistrationImageView, RegistrationConstants.RE_REGISTRATION_IMG);
 			}
 		});
 		dashBoardPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
@@ -726,7 +726,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 	/**
 	 * Update packet status.
-	 * 
+	 *
 	 * @throws RegBaseCheckedException
 	 */
 	private void updatePacketStatus() throws RegBaseCheckedException {
@@ -745,11 +745,11 @@ public class PacketHandlerController extends BaseController implements Initializ
 	public ProgressIndicator getProgressIndicator() {
 		return progressIndicator;
 	}
-	
+
 	public GridPane getPreRegDataPane() {
 		return downloadPreRegDataPane;
 	}
-	
+
 	public void setInProgressImage(Image image) {
 		inProgressImage.setImage(image);
 	}
@@ -865,7 +865,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 		changeNodeOrientation(gridPane);
 		return gridPane;
 	}
-	
+
 	public void selectLanguage(MouseEvent event) {
 		if (!proceedOnRegistrationAction())
 			return;
