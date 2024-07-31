@@ -630,7 +630,7 @@
 Working on new Css by taleev
 */
 #loginScreen {
-	-fx-background-image: url('/images/UnrafLoginBackGround.png.');
+	-fx-background-image: url('/images/UnrafLoginBackGround.png');
 	-fx-background-size: cover, auto;
 	-fx-background-position: left top, center;
 }
