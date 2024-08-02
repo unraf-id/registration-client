@@ -301,15 +301,15 @@ public class GenericController<uiFieldDTO> extends BaseController {
 					@Override
 					protected Void call() {
 						Platform.runLater(() -> {
-							boolean isValid = false;
-							try {
-								isValid = pridValidatorImpl.validateId(textField.getText());
-							} catch (InvalidIDException invalidIDException) { isValid = false; }
+							//boolean isValid = false;
+							//try {
+							//	isValid = pridValidatorImpl.validateId(textField.getText());
+							//} catch (InvalidIDException invalidIDException) { isValid = false; }
 
-							if(!isValid) {
-								generateAlertLanguageSpecific(RegistrationConstants.ERROR, RegistrationUIConstants.PRE_REG_ID_NOT_VALID);
-								return;
-							}
+							//if(!isValid) {
+							//	generateAlertLanguageSpecific(RegistrationConstants.ERROR, RegistrationUIConstants.PRE_REG_ID_NOT_VALID);
+							//	return;
+							//}
 							ResponseDTO responseDTO = preRegistrationDataSyncService.getPreRegistration(textField.getText(), false);
 
 							if (responseDTO.getErrorResponseDTOs() != null
