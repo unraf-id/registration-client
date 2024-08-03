@@ -1,4 +1,6 @@
 package io.mosip.registration.controller;
+
+import io.mosip.commons.packet.dto.packet.SimpleDto;
 import io.mosip.kernel.core.idvalidator.exception.InvalidIDException;
 import io.mosip.kernel.core.idvalidator.spi.PridValidator;
 import io.mosip.kernel.core.logger.spi.Logger;
@@ -36,6 +38,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
@@ -117,6 +121,9 @@ public class GenericController<uiFieldDTO> extends BaseController {
 
 	@Autowired
 	private PreRegistrationDataSyncService preRegistrationDataSyncService;
+
+	@Autowired
+	private QrCodePopUpViewController qrCodePopUpViewController;
 
 	private static TreeMap<Integer, UiScreenDTO> orderedScreens = new TreeMap<>();
 	private static Map<String, FxControl> fxControlMap = new HashMap<String, FxControl>();
@@ -211,6 +218,20 @@ public class GenericController<uiFieldDTO> extends BaseController {
 			executePreRegFetchTask(textField);
 		});
 
+		if(RegistrationConstants.ENABLE.equalsIgnoreCase((String) ApplicationContext.map()
+				.getOrDefault(RegistrationConstants.REGCLIENT_QR_CODE_SCAN_ENABLE, RegistrationConstants.ENABLE))) {
+			Button scanQRbutton = new Button();
+			scanQRbutton.setId("scanQRBtn");
+			scanQRbutton.setGraphic(new ImageView(
+					new Image(this.getClass().getResourceAsStream(RegistrationConstants.QR_CODE), 25, 25, true, true)));
+			scanQRbutton.getStyleClass().add("demoGraphicPaneContentButton");
+			scanQRbutton.setOnAction(event -> {
+				executeQRCodeScan();
+			});
+
+			innerHBox.getChildren().add(scanQRbutton);
+		}
+
 		innerHBox.getChildren().add(textField);
 
 		hBox.getChildren().add(innerHBox);
@@ -223,6 +244,47 @@ public class GenericController<uiFieldDTO> extends BaseController {
 		hBox.getChildren().add(progressIndicator);
 		return hBox;
 	}
+
+	private void executeQRCodeScan() {
+		genericScreen.setDisable(true);
+
+		Service<Void> taskService = new Service<Void>() {
+			@Override
+			protected Task<Void> createTask() {
+				return new Task<Void>() {
+					/*
+					 * (non-Javadoc)
+					 *
+					 * @see javafx.concurrent.Task#call()
+					 */
+					@Override
+					protected Void call() {
+						Platform.runLater(() -> {
+							qrCodePopUpViewController.init(RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.SCAN_QR_CODE_TITLE));
+						});
+						return null;
+					}
+				};
+			}
+		};
+
+		taskService.start();
+		taskService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent workerStateEvent) {
+				genericScreen.setDisable(false);
+			}
+		});
+		taskService.setOnFailed(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent t) {
+				LOGGER.debug("QR code scan failed");
+				genericScreen.setDisable(false);
+			}
+		});
+
+	}
+
 	protected void executePreRegFetchTask(TextField textField) {
 		genericScreen.setDisable(true);
 		progressIndicator.setVisible(true);
