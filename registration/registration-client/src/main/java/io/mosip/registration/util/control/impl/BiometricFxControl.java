@@ -100,7 +100,6 @@ public class BiometricFxControl extends FxControl {
 
 	@Override
 	public void setListener(Node node) {
-
 	}
 
 	@Override
@@ -373,7 +372,6 @@ public class BiometricFxControl extends FxControl {
 			}
 		}
 	}
-
 
 	@Override
 	public boolean canContinue() {

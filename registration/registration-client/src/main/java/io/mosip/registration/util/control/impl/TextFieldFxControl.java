@@ -133,9 +133,7 @@ public class TextFieldFxControl extends FxControl {
 	@Override
 	public void setListener(Node node) {
 		FXUtils.getInstance().onTypeFocusUnfocusListener((Pane) getNode(), (TextField) node);
-
 		TextField textField = (TextField) node;
-
 		textField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (uiFieldDTO.isTransliterate()) {
 				transliterate(textField, textField.getId().substring(textField.getId().length() - RegistrationConstants.LANGCODE_LENGTH, textField.getId().length()));
@@ -457,8 +455,6 @@ public class TextFieldFxControl extends FxControl {
 	public List<GenericDto> getPossibleValues(String langCode) {
 		return null;
 	}
-
-
 	@Override
 	public void fillData(Object data) {
 		selectAndSet(data);

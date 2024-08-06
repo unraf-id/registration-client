@@ -24,6 +24,7 @@ import io.mosip.registration.enums.FlowType;
 import io.mosip.registration.validator.RequiredFieldValidator;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -154,8 +155,13 @@ public abstract class FxControl  {
 			}
 		}
 		visible(this.node, isFieldVisible(uiFieldDTO));
+		disable(this.node, true);
 	}
-
+	private void disableField(boolean condition) {
+		if (condition) {
+			disable(this.node, true);
+		}
+	}
 	/**
 	 * Hide the field
 	 */
@@ -318,5 +324,4 @@ public abstract class FxControl  {
 	public void setNode(Node node) {
 		this.node = node;
 	}
-
 }

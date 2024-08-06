@@ -125,7 +125,6 @@ public class CheckBoxFxControl extends FxControl {
 		return null;
 	}
 
-
 	@Override
 	public void setListener(Node node) {
 		CheckBox checkBox = (CheckBox) node;

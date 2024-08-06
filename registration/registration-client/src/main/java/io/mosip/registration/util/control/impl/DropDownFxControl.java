@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import io.mosip.registration.controller.ClientApplication;
 import io.mosip.registration.dao.MasterSyncDao;
 import javafx.geometry.Insets;
+import javafx.scene.control.TextField;
 import org.springframework.context.ApplicationContext;
 
 import io.mosip.registration.dto.mastersync.GenericDto;
@@ -15,7 +16,6 @@ import io.mosip.registration.config.AppConfig;
 import io.mosip.registration.constants.RegistrationConstants;
 import io.mosip.registration.controller.FXUtils;
 import io.mosip.registration.controller.GenericController;
-import io.mosip.registration.controller.Initialization;
 import io.mosip.registration.controller.reg.Validations;
 import io.mosip.registration.dto.schema.UiFieldDTO;
 import io.mosip.registration.entity.Location;
@@ -169,7 +169,6 @@ public class DropDownFxControl extends FxControl {
 		}
 		return masterSyncService.getFieldValues(fieldSubType, langCode, isHierarchical);
 	}
-
 	private <T> ComboBox<GenericDto> getComboBox(String id, String titleText, String stycleClass, double prefWidth,
 												 boolean isDisable) {
 		ComboBox<GenericDto> field = new ComboBox<GenericDto>();

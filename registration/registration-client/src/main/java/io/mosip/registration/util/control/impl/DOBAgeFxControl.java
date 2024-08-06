@@ -14,7 +14,6 @@ import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.registration.config.AppConfig;
 import io.mosip.registration.constants.RegistrationConstants;
 import io.mosip.registration.controller.FXUtils;
-import io.mosip.registration.controller.Initialization;
 import io.mosip.registration.controller.reg.DateValidation;
 import io.mosip.registration.dto.mastersync.GenericDto;
 import io.mosip.registration.dto.schema.UiFieldDTO;
@@ -210,7 +209,6 @@ public class DOBAgeFxControl extends FxControl {
 				(TextField) getField(
 						uiFieldDTO.getId() + RegistrationConstants.AGE_FIELD + RegistrationConstants.TEXT_FIELD),
 				RegistrationConstants.AGE_FIELD);
-
 	}
 
 	private void addListener(TextField textField, String dateTyep) {

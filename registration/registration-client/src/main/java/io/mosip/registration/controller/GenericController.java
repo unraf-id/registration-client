@@ -222,10 +222,10 @@ public class GenericController<uiFieldDTO> extends BaseController {
 		hBox.getChildren().add(progressIndicator);
 		return hBox;
 	}
+
 	protected void executePreRegFetchTask(TextField textField) {
 		genericScreen.setDisable(true);
 		progressIndicator.setVisible(true);
-
 		Service<Void> taskService = new Service<Void>() {
 			@Override
 			protected Task<Void> createTask() {
