@@ -50,36 +50,8 @@ public class UiFieldDTO {
 	private List<RequiredOnExpr> requiredOn;
 	@JsonProperty("subType")
 	private String subType;
-	@JsonProperty("firstNameDisabled")
-	private boolean isFirstNameDisabled;
-	@JsonProperty("middleNameDisabled")
-	private boolean isMiddleNameDisabled;
-	@JsonProperty("lastNameDisabled")
-	private boolean isLastNameDisabled;
-	@JsonProperty("dobDisabled")
-	private boolean isDobDisabled;
-	@JsonProperty("genderDisabled")
-	private boolean isGenderDisabled;
-	@JsonProperty("dateOfRegistrationDisabled")
-	private boolean isDateOfRegDisabled;
-	@JsonProperty("nationalityDisabled")
-	private boolean isNationalityDisabled;
-	@JsonProperty("addressLineDisabled")
-	private boolean isAddressLineDisabled;
-	@JsonProperty("addressNumberDisabled")
-	private boolean isAddressNumberDisabled;
-	@JsonProperty("postalCodeDisabled")
-	private boolean isPostalCodeDisabled;
-	@JsonProperty("userTypeDisabled")
-	private boolean isUserTypeDisabled;
-	@JsonProperty("IdDisabled")
-	private boolean isIdDisabled;
-	@JsonProperty("fileNumberDisabled")
-	private boolean isFileNumberDisabled;
-	@JsonProperty("phoneDisabled")
-	private boolean isPhoneDisabled;
-	@JsonProperty("emailDisabled")
-    private boolean isEmailDisabled;
+	@JsonProperty("disabled")
+	private boolean isDisabled;
 	private String contactType;
 	private String group;
 	private HashMap<String, String> groupLabel;

@@ -155,12 +155,7 @@ public abstract class FxControl  {
 			}
 		}
 		visible(this.node, isFieldVisible(uiFieldDTO));
-		disable(this.node, true);
-	}
-	private void disableField(boolean condition) {
-		if (condition) {
-			disable(this.node, true);
-		}
+		disable(this.node, uiFieldDTO.isDisabled());
 	}
 	/**
 	 * Hide the field
