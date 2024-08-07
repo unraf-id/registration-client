@@ -154,6 +154,7 @@ public abstract class FxControl  {
 			}
 		}
 		visible(this.node, isFieldVisible(uiFieldDTO));
+		disable(this.node,uiFieldDTO.isDisabled());
 	}
 
 	/**

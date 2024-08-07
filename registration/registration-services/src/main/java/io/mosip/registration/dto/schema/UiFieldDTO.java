@@ -50,6 +50,8 @@ public class UiFieldDTO {
 	private List<RequiredOnExpr> requiredOn;
 	@JsonProperty("subType")
 	private String subType;
+	@JsonProperty("disabled")
+	private boolean isDisabled;
 	private String contactType;
 	private String group;
 	private HashMap<String, String> groupLabel;
