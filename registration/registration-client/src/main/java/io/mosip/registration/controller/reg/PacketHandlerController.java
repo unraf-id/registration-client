@@ -99,9 +99,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 	private Label lastBiometricTime;
 
 	@FXML
-	private Label lastPreRegPacketDownloadedTime;
-
-	@FXML
 	private ImageView inProgressImage;
 
 	@FXML
@@ -130,10 +127,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 	private GridPane syncDataPane;
 	@FXML
 	private ImageView syncDataImageView;
-	@FXML
-	private GridPane downloadPreRegDataPane;
-	@FXML
-	private ImageView downloadPreRegDataImageView;
 	@FXML
 	private GridPane eodApprovalPane;
 	@FXML
@@ -264,7 +257,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 			setImagesOnHover();
 
 			setImage(syncDataImageView, RegistrationConstants.SYNC_IMG);
-			setImage(downloadPreRegDataImageView, RegistrationConstants.DWLD_PRE_REG_DATA_IMG);
 			setImage(uploadPacketImageView, RegistrationConstants.UPDATE_OPERATOR_BIOMETRICS_IMG);
 			setImage(eodApprovalImageView, RegistrationConstants.PENDING_APPROVAL_IMG);
 			setImage(viewReportsImageView, RegistrationConstants.VIEW_REPORTS_IMG);
@@ -307,15 +299,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 			} else {
 
 				setImage(syncDataImageView, RegistrationConstants.SYNC_IMG);
-			}
-		});
-		downloadPreRegDataPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
-			if (newValue) {
-
-				setImage(downloadPreRegDataImageView, RegistrationConstants.DOWNLOAD_PREREG_FOCUSED_IMG);
-			} else {
-
-				setImage(downloadPreRegDataImageView, RegistrationConstants.DWLD_PRE_REG_DATA_IMG);
 			}
 		});
 		eodApprovalPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
@@ -494,15 +477,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 	}
 
 	/**
-	 * This method is to trigger the Pre registration sync service
-	 */
-	@FXML
-	public void downloadPreRegData() {
-
-		headerController.downloadPreRegData(null);
-	}
-
-	/**
 	 * change On-Board user Perspective
 	 */
 	public void onBoardUser() {
@@ -653,10 +627,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 		return progressIndicator;
 	}
 
-	public GridPane getPreRegDataPane() {
-		return downloadPreRegDataPane;
-	}
-
 	public void setInProgressImage(Image image) {
 		inProgressImage.setImage(image);
 	}
@@ -668,11 +638,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 		if (syncControl != null) {
 			Timestamp lastPreRegPacketDownloaded = syncControl.getLastSyncDtimes();
-
-			if (lastPreRegPacketDownloaded != null) {
-				lastPreRegPacketDownloadedTime.setText(RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.LAST_DOWNLOADED) + " "
-						+ getLocalZoneTime(lastPreRegPacketDownloaded.toString()));
-			}
 		}
 	}
 
