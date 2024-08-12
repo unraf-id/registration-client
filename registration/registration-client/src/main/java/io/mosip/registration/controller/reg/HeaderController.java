@@ -130,7 +130,7 @@ public class HeaderController extends BaseController {
 	private ImageView homeSelectionMenuImageView;
 	@FXML
 	private ImageView homeImgView;
-	
+
 
 	@FXML
 	private HBox online;
@@ -139,7 +139,7 @@ public class HeaderController extends BaseController {
 	private HBox offline;
 
 	@FXML
-    private HBox settingsHBox;
+	private HBox settingsHBox;
 
 	@FXML
 	private Menu homeSelectionMenu;
@@ -195,16 +195,16 @@ public class HeaderController extends BaseController {
 	private BaseService baseService;
 
 	@Autowired
-    private IdentitySchemaService identitySchemaService;
+	private IdentitySchemaService identitySchemaService;
 
-    @Autowired
+	@Autowired
 	private SettingsController settingsController;
-    
-    @Autowired
+
+	@Autowired
 	private LocalConfigService localConfigService;
 
-    private List<SettingsSchema> settingsByRole = new ArrayList<>();
-	
+	private List<SettingsSchema> settingsByRole = new ArrayList<>();
+
 
 	/**
 	 * Mapping Registration Officer details
@@ -214,7 +214,7 @@ public class HeaderController extends BaseController {
 		LOGGER.info(LoggerConstants.LOG_REG_HEADER, APPLICATION_NAME, APPLICATION_ID,
 				"Displaying Registration Officer details");
 
-		
+
 		setImage(mosipLogo	, RegistrationConstants.MOSIP_LOGO_SMALL_IMG);
 		setImage(userImageView	, RegistrationConstants.USER_IMG);
 		setImage(regCenterLocationImgView	, RegistrationConstants.REG_CENTER_LOCATION_IMG);
@@ -252,11 +252,11 @@ public class HeaderController extends BaseController {
 				if (settingsByRole != null && !settingsByRole.isEmpty()) {
 					settingsIconHBox.setVisible(true);
 					Optional<SettingsSchema> deviceSettings = settingsByRole.stream().filter(
-							settings -> settings.getName().equalsIgnoreCase(RegistrationConstants.DEVICE_SETTINGS_NAME))
+									settings -> settings.getName().equalsIgnoreCase(RegistrationConstants.DEVICE_SETTINGS_NAME))
 							.findAny();
 					if (deviceSettings.isPresent()
 							&& localConfigService.getValue(RegistrationConstants.DEVICES_SHORTCUT_PREFERENCE_NAME)
-									.equalsIgnoreCase(RegistrationConstants.ENABLE)) {
+							.equalsIgnoreCase(RegistrationConstants.ENABLE)) {
 						settingsController.createShortCut(deviceSettings.get());
 					}
 				}
@@ -275,7 +275,7 @@ public class HeaderController extends BaseController {
 			}
 		}, 0, (long)15 * 60 * 1000);
 	}
-	
+
 	public void logout() {
 		streamer.stop();
 		auditFactory.audit(AuditEvent.LOGOUT_USER, Components.NAVIGATION, SessionContext.userContext().getUserId(),
@@ -473,24 +473,24 @@ public class HeaderController extends BaseController {
 				@Override
 				protected Task<Boolean> createTask() {
 					return /**
-							 * @author SaravanaKumar
-							 *
-							 */
-					new Task<Boolean>() {
-						/*
-						 * (non-Javadoc)
-						 * 
-						 * @see javafx.concurrent.Task#call()
-						 */
-						@Override
-						protected Boolean call() throws RegBaseCheckedException {
-							LOGGER.info("REGISTRATION - SYNC - HEADER_CONTROLLER", APPLICATION_NAME, APPLICATION_ID,
-									"Executing client settings to check remap process");
-							masterSyncService.getMasterSync(RegistrationConstants.OPT_TO_REG_MDS_J00001,
-									RegistrationConstants.JOB_TRIGGER_POINT_USER);
-							return true;
-						}
-					};
+					 * @author SaravanaKumar
+					 *
+					 */
+							new Task<Boolean>() {
+								/*
+								 * (non-Javadoc)
+								 *
+								 * @see javafx.concurrent.Task#call()
+								 */
+								@Override
+								protected Boolean call() throws RegBaseCheckedException {
+									LOGGER.info("REGISTRATION - SYNC - HEADER_CONTROLLER", APPLICATION_NAME, APPLICATION_ID,
+											"Executing client settings to check remap process");
+									masterSyncService.getMasterSync(RegistrationConstants.OPT_TO_REG_MDS_J00001,
+											RegistrationConstants.JOB_TRIGGER_POINT_USER);
+									return true;
+								}
+							};
 				}
 			};
 			progressIndicator.progressProperty().bind(remapTaskService.progressProperty());
@@ -581,25 +581,25 @@ public class HeaderController extends BaseController {
 			@Override
 			protected Task<ResponseDTO> createTask() {
 				return /**
-						 * @author SaravanaKumar
-						 *
-						 */
-				new Task<ResponseDTO>() {
-					/*
-					 * (non-Javadoc)
-					 *
-					 * @see javafx.concurrent.Task#call()
-					 */
-					@Override
-					protected ResponseDTO call() {
+				 * @author SaravanaKumar
+				 *
+				 */
+						new Task<ResponseDTO>() {
+							/*
+							 * (non-Javadoc)
+							 *
+							 * @see javafx.concurrent.Task#call()
+							 */
+							@Override
+							protected ResponseDTO call() {
 
-						LOGGER.info("REGISTRATION - SYNC - HEADER_CONTROLLER", APPLICATION_NAME, APPLICATION_ID,
-								"Handling all the sync activities");
+								LOGGER.info("REGISTRATION - SYNC - HEADER_CONTROLLER", APPLICATION_NAME, APPLICATION_ID,
+										"Handling all the sync activities");
 
-						return jobConfigurationService.executeAllJobs();
+								return jobConfigurationService.executeAllJobs();
 
-					}
-				};
+							}
+						};
 			}
 		};
 
@@ -617,13 +617,13 @@ public class HeaderController extends BaseController {
 
 				ResponseDTO responseDTO = taskService.getValue();
 				boolean isLogoutRequired = false;
-				
+
 				if (responseDTO.getErrorResponseDTOs() != null) {
 					generateAlert(RegistrationConstants.ERROR, responseDTO.getErrorResponseDTOs().get(0).getMessage()+"#TYPE#ERROR");
 					isLogoutRequired = !responseDTO.getErrorResponseDTOs().isEmpty() && Objects.nonNull(responseDTO.getErrorResponseDTOs().get(0).getOtherAttributes());
 				} else {
 					generateAlert(RegistrationConstants.ALERT_INFORMATION, RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.SYNC_SUCCESS));
-					isLogoutRequired = Objects.nonNull(responseDTO.getSuccessResponseDTO().getOtherAttributes()) && 
+					isLogoutRequired = Objects.nonNull(responseDTO.getSuccessResponseDTO().getOtherAttributes()) &&
 							responseDTO.getSuccessResponseDTO().getOtherAttributes().containsKey(RegistrationConstants.ROLES_MODIFIED);
 				}
 				if (isLogoutRequired) {
@@ -691,27 +691,27 @@ public class HeaderController extends BaseController {
 			@Override
 			protected Task<String> createTask() {
 				return /**
-						 * @author SaravanaKumar
-						 *
-						 */
-				new Task<String>() {
-					/*
-					 * (non-Javadoc)
-					 *
-					 * @see javafx.concurrent.Task#call()
-					 */
-					@Override
-					protected String call() {
+				 * @author SaravanaKumar
+				 *
+				 */
+						new Task<String>() {
+							/*
+							 * (non-Javadoc)
+							 *
+							 * @see javafx.concurrent.Task#call()
+							 */
+							@Override
+							protected String call() {
 
-						LOGGER.info("REGISTRATION - SOFTWARE_UPDATE - HEADER_CONTROLLER", APPLICATION_NAME,
-								APPLICATION_ID, "Handling all the Software Update activities");
+								LOGGER.info("REGISTRATION - SOFTWARE_UPDATE - HEADER_CONTROLLER", APPLICATION_NAME,
+										APPLICATION_ID, "Handling all the Software Update activities");
 
-						progressIndicator.setVisible(true);
-						pane.setDisable(true);
-						return softwareUpdate();
+								progressIndicator.setVisible(true);
+								pane.setDisable(true);
+								return softwareUpdate();
 
-					}
-				};
+							}
+						};
 			}
 		};
 
@@ -742,7 +742,7 @@ public class HeaderController extends BaseController {
 	}
 
 	public void softwareUpdate(Pane pane, ProgressIndicator progressIndicator, String context,
-			boolean isPreLaunchTaskToBeStopped) {
+							   boolean isPreLaunchTaskToBeStopped) {
 		Alert updateAlert = createAlert(AlertType.CONFIRMATION, RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.UPDATE_AVAILABLE),
 				RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.ALERT_NOTE_LABEL), context, RegistrationConstants.UPDATE_NOW_LABEL,
 				RegistrationConstants.UPDATE_LATER_LABEL);
@@ -791,7 +791,7 @@ public class HeaderController extends BaseController {
 	}
 
 	private void softwareUpdateInitiate(Pane pane, ProgressIndicator progressIndicator, String context,
-			boolean isPreLaunchTaskToBeStopped) {
+										boolean isPreLaunchTaskToBeStopped) {
 		if (serviceDelegateUtil.isNetworkAvailable()) {
 			executeSoftwareUpdateTask(pane, progressIndicator);
 		} else {
@@ -819,33 +819,33 @@ public class HeaderController extends BaseController {
 			@Override
 			protected Task<ResponseDTO> createTask() {
 				return /**
-						 * @author Yaswanth S
-						 *
-						 */
-				new Task<ResponseDTO>() {
-					/*
-					 * (non-Javadoc)
-					 *
-					 * @see javafx.concurrent.Task#call()
-					 */
-					@Override
-					protected ResponseDTO call() {
-						LOGGER.info("REGISTRATION - HEADER_CONTROLLER - DOWNLOAD_PRE_REG_DATA_TASK", APPLICATION_NAME,
-								APPLICATION_ID, "Started pre reg download task");
+				 * @author Yaswanth S
+				 *
+				 */
+						new Task<ResponseDTO>() {
+							/*
+							 * (non-Javadoc)
+							 *
+							 * @see javafx.concurrent.Task#call()
+							 */
+							@Override
+							protected ResponseDTO call() {
+								LOGGER.info("REGISTRATION - HEADER_CONTROLLER - DOWNLOAD_PRE_REG_DATA_TASK", APPLICATION_NAME,
+										APPLICATION_ID, "Started pre reg download task");
 
-						Platform.runLater(() -> {
-							try {
-								packetHandlerController.setInProgressImage(getImage("in-progress.png", true));
-							} catch (RegBaseCheckedException e) {
-								LOGGER.error("Error in getting imageview: " + e);
+								Platform.runLater(() -> {
+									try {
+										packetHandlerController.setInProgressImage(getImage("in-progress.png", true));
+									} catch (RegBaseCheckedException e) {
+										LOGGER.error("Error in getting imageview: " + e);
+									}
+								});
+
+								pane.setDisable(true);
+								return jobConfigurationService.executeJob(RegistrationConstants.OPT_TO_REG_PDS_J00003,
+										RegistrationConstants.JOB_TRIGGER_POINT_USER);
 							}
-						});
-						
-						pane.setDisable(true);
-						return jobConfigurationService.executeJob(RegistrationConstants.OPT_TO_REG_PDS_J00003,
-								RegistrationConstants.JOB_TRIGGER_POINT_USER);
-					}
-				};
+						};
 			}
 		};
 
@@ -873,7 +873,7 @@ public class HeaderController extends BaseController {
 				}
 			}
 		});
-		
+
 		taskService.setOnFailed(event -> {
 			pane.setDisable(false);
 			packetHandlerController.setInProgressImage(null);
@@ -903,7 +903,7 @@ public class HeaderController extends BaseController {
 
 	/**
 	 * Redirects to mosip.io in case of user reset pword
-	 * 
+	 *
 	 * @param event event for reset pword
 	 */
 	public void resetPword(ActionEvent event) {
@@ -964,7 +964,7 @@ public class HeaderController extends BaseController {
 				localConfigService.updateShortcutPreference(RegistrationConstants.DEVICES_SHORTCUT_PREFERENCE_NAME,
 						RegistrationConstants.DISABLE);
 				settingsHBox.getChildren().remove(shortCutHBox);
-				
+
 			});
 			shortCutHBox.setOnContextMenuRequested(e -> {
 				contextMenu.show(shortCutHBox.getScene().getWindow(), e.getScreenX(), e.getScreenY());

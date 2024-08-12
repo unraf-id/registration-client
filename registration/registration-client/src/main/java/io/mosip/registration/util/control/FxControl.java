@@ -16,7 +16,6 @@ import io.mosip.registration.context.ApplicationContext;
 import io.mosip.registration.context.SessionContext;
 import io.mosip.registration.controller.ClientApplication;
 import io.mosip.registration.controller.GenericController;
-import io.mosip.registration.controller.Initialization;
 import io.mosip.registration.dto.RegistrationDTO;
 import io.mosip.registration.dto.mastersync.GenericDto;
 import io.mosip.registration.dto.schema.UiFieldDTO;
@@ -24,7 +23,7 @@ import io.mosip.registration.enums.FlowType;
 import io.mosip.registration.validator.RequiredFieldValidator;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -126,9 +125,8 @@ public abstract class FxControl  {
 	 * Disable the field
 	 */
 	public void disable(Node node, boolean isDisable) {
-
+		node.setStyle("-fx-font-weight: bold;");
 		node.setDisable(isDisable);
-
 	}
 
 	/**

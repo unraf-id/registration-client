@@ -96,9 +96,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 	private Label pendingApprovalCountLbl;
 
 	@FXML
-	private Label reRegistrationCountLbl;
-
-	@FXML
 	private Label lastBiometricTime;
 
 	@FXML
@@ -138,25 +135,13 @@ public class PacketHandlerController extends BaseController implements Initializ
 	@FXML
 	private ImageView downloadPreRegDataImageView;
 	@FXML
-	private GridPane updateOperatorBiometricsPane;
-	@FXML
-	private ImageView updateOperatorBiometricsImageView;
-	@FXML
 	private GridPane eodApprovalPane;
 	@FXML
 	private ImageView eodApprovalImageView;
 	@FXML
-	private GridPane reRegistrationPane;
-	@FXML
-	private ImageView reRegistrationImageView;
-	@FXML
 	private GridPane dashBoardPane;
 	@FXML
 	private GridPane uploadPacketPane;
-	@FXML
-	private GridPane centerRemapPane;
-	@FXML
-	private GridPane checkUpdatesPane;
 	@FXML
 	private ImageView viewReportsImageView;
 
@@ -165,12 +150,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 	@FXML
 	private ImageView uploadPacketImageView;
-
-	@FXML
-	private ImageView remapImageView;
-
-	@FXML
-	private ImageView checkUpdatesImageView;
 
 	@FXML
 	private ImageView tickMarkImageView;
@@ -287,22 +266,15 @@ public class PacketHandlerController extends BaseController implements Initializ
 			setImage(syncDataImageView, RegistrationConstants.SYNC_IMG);
 			setImage(downloadPreRegDataImageView, RegistrationConstants.DWLD_PRE_REG_DATA_IMG);
 			setImage(uploadPacketImageView, RegistrationConstants.UPDATE_OPERATOR_BIOMETRICS_IMG);
-			setImage(remapImageView, RegistrationConstants.SYNC_IMG);
-			setImage(checkUpdatesImageView, RegistrationConstants.DWLD_PRE_REG_DATA_IMG);
 			setImage(eodApprovalImageView, RegistrationConstants.PENDING_APPROVAL_IMG);
-			setImage(reRegistrationImageView, RegistrationConstants.RE_REGISTRATION_IMG);
 			setImage(viewReportsImageView, RegistrationConstants.VIEW_REPORTS_IMG);
 			setImage(tickMarkImageView, RegistrationConstants.TICK_IMG);
-			setImage(updateOperatorBiometricsImageView, RegistrationConstants.UPDATE_OPERATOR_BIOMETRICS_IMG);
-
 			if (!Role.hasSupervisorRole(SessionContext.userContext().getRoles())) {
 				eodProcessGridPane.setVisible(false);
 				eodLabel.setVisible(false);
 			}
 			setLastUpdateTime();
 			pendingApprovalCountLbl.setText(RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.NO_PENDING_APPLICATIONS));
-			reRegistrationCountLbl.setText(RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.NO_RE_REGISTER_APPLICATIONS));
-
 			List<RegistrationApprovalDTO> pendingApprovalRegistrations = registrationApprovalService
 					.getEnrollmentByStatus(RegistrationClientStatusCode.CREATED.getCode());
 
@@ -311,10 +283,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 			if (!pendingApprovalRegistrations.isEmpty()) {
 				pendingApprovalCountLbl
 						.setText(pendingApprovalRegistrations.size() + " " + RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.APPLICATIONS));
-			}
-			if (!reRegisterRegistrations.isEmpty()) {
-				reRegistrationCountLbl
-						.setText(reRegisterRegistrations.size() + " " + RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.APPLICATIONS));
 			}
 
 			Timestamp ts = userOnboardService.getLastUpdatedTime(SessionContext.userId());
@@ -350,25 +318,11 @@ public class PacketHandlerController extends BaseController implements Initializ
 				setImage(downloadPreRegDataImageView, RegistrationConstants.DWLD_PRE_REG_DATA_IMG);
 			}
 		});
-		updateOperatorBiometricsPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
-			if (newValue) {
-				setImage(updateOperatorBiometricsImageView, RegistrationConstants.UPDATE_OP_BIOMETRICS_FOCUSED_IMG);
-			} else {
-				setImage(updateOperatorBiometricsImageView, RegistrationConstants.UPDATE_OPERATOR_BIOMETRICS_IMG);
-			}
-		});
 		eodApprovalPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue) {
 				setImage(eodApprovalImageView, RegistrationConstants.PENDING_APPROVAL_FOCUSED_IMG);
 			} else {
 				setImage(eodApprovalImageView, RegistrationConstants.PENDING_APPROVAL_IMG);
-			}
-		});
-		reRegistrationPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
-			if (newValue) {
-				setImage(reRegistrationImageView, RegistrationConstants.RE_REGISTRATION_FOCUSED_IMG);
-			} else {
-				setImage(reRegistrationImageView, RegistrationConstants.RE_REGISTRATION_IMG);
 			}
 		});
 		dashBoardPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
@@ -385,22 +339,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 			} else {
 
 				setImage(uploadPacketImageView, RegistrationConstants.UPDATE_OPERATOR_BIOMETRICS_IMG);
-			}
-		});
-		centerRemapPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
-			if (newValue) {
-
-				setImage(remapImageView, RegistrationConstants.SYNC_DATA_FOCUSED_IMG);
-			} else {
-
-				setImage(remapImageView, RegistrationConstants.SYNC_IMG);
-			}
-		});
-		checkUpdatesPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
-			if (newValue) {
-				setImage(checkUpdatesImageView, RegistrationConstants.DOWNLOAD_PREREG_FOCUSED_IMG);
-			} else {
-				setImage(checkUpdatesImageView, RegistrationConstants.DWLD_PRE_REG_DATA_IMG);
 			}
 		});
 	}
@@ -656,37 +594,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 		}
 		return response;
 	}
-
-
-	/**
-	 * Load re registration screen.
-	 */
-	public void loadReRegistrationScreen() {
-		if (!proceedOnReRegistrationAction()) {
-			return;
-		}
-		LOGGER.info(PACKET_HANDLER, APPLICATION_NAME, APPLICATION_ID, "Loading re-registration screen sarted.");
-
-		try {
-			auditFactory.audit(AuditEvent.NAV_RE_REGISTRATION, Components.NAVIGATION,
-					SessionContext.userContext().getUserId(), AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
-
-			Parent root = BaseController.load(getClass().getResource(RegistrationConstants.REREGISTRATION_PAGE));
-
-			LOGGER.info("REGISTRATION - LOAD_REREGISTRATION_SCREEN - REGISTRATION_OFFICER_PACKET_CONTROLLER",
-					APPLICATION_NAME, APPLICATION_ID, "Loading reregistration screen");
-
-			getScene(root);
-		} catch (IOException ioException) {
-			LOGGER.error("REGISTRATION - LOAD_REREGISTRATION_SCREEN - REGISTRATION_OFFICER_PACKET_CONTROLLER",
-					APPLICATION_NAME, APPLICATION_ID,
-					ioException.getMessage() + ExceptionUtils.getStackTrace(ioException));
-
-			generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.UNABLE_LOAD_APPROVAL_PAGE));
-		}
-		LOGGER.info(PACKET_HANDLER, APPLICATION_NAME, APPLICATION_ID, "Loading re-registration screen ended.");
-	}
-
 	public void viewDashBoard() {
 
 		LOGGER.info(PACKET_HANDLER, APPLICATION_NAME, APPLICATION_ID, "Loading dashboard screen sarted.");
@@ -775,11 +682,6 @@ public class PacketHandlerController extends BaseController implements Initializ
 				SessionContext.userContext().getUserId(), AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
 
 		uploadPacket();
-	}
-
-	@FXML
-	public void intiateRemapProcess() {
-		headerController.intiateRemapProcess();
 	}
 
 	@FXML
