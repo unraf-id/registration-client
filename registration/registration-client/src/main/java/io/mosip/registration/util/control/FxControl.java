@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package io.mosip.registration.util.control;
 
@@ -16,7 +16,6 @@ import io.mosip.registration.context.ApplicationContext;
 import io.mosip.registration.context.SessionContext;
 import io.mosip.registration.controller.ClientApplication;
 import io.mosip.registration.controller.GenericController;
-import io.mosip.registration.controller.Initialization;
 import io.mosip.registration.dto.RegistrationDTO;
 import io.mosip.registration.dto.mastersync.GenericDto;
 import io.mosip.registration.dto.schema.UiFieldDTO;
@@ -24,17 +23,17 @@ import io.mosip.registration.enums.FlowType;
 import io.mosip.registration.validator.RequiredFieldValidator;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
- * 
+ *
  * Control Type will give high level controls for fields TextField,CheckBox,
  * DropDown,DropDown, Buttons, document type, Biometric Type
- * 
+ *
  * It also provides a features to copy,disable and visible
- * 
+ *
  * @author YASWANTH S
  *
  */
@@ -53,7 +52,7 @@ public abstract class FxControl  {
 
 	/**
 	 * Build Error code, title and fx Element Set Listeners Set Actione events
-	 * 
+	 *
 	 * @param uiFieldDTO field information
 	 */
 	public abstract FxControl build(UiFieldDTO uiFieldDTO);
@@ -65,31 +64,31 @@ public abstract class FxControl  {
 	public abstract void setListener(Node node);
 
 	/**
-	 * 
+	 *
 	 * Set Data into Registration DTO
-	 * 
+	 *
 	 * @param data value
 	 */
 	public abstract void setData(Object data);
 
 	/**
-	 * 
+	 *
 	 * Fill Data into fx element
-	 * 
+	 *
 	 * @param data value
 	 */
 	public abstract void fillData(Object data);
 
 	/**
 	 * Get Value from fx element
-	 * 
+	 *
 	 * @return Value
 	 */
 	public abstract Object getData();
 
 	/**
 	 * Check value is valid or not
-	 * 
+	 *
 	 * @return boolean is valid or not
 	 */
 	//public abstract boolean isValid(Node node);
@@ -126,9 +125,8 @@ public abstract class FxControl  {
 	 * Disable the field
 	 */
 	public void disable(Node node, boolean isDisable) {
-
+		node.setStyle("-fx-font-weight: bold;");
 		node.setDisable(isDisable);
-
 	}
 
 	/**
@@ -198,7 +196,7 @@ public abstract class FxControl  {
 				return true;
 
 			if(getRegistrationDTo().getFlowType() == FlowType.UPDATE
-				&& !getRegistrationDTo().getUpdatableFields().contains(this.uiFieldDTO.getId())) {
+					&& !getRegistrationDTo().getUpdatableFields().contains(this.uiFieldDTO.getId())) {
 				LOGGER.error("canContinue check on, {} is non-updatable ignoring", uiFieldDTO.getId());
 				return true;
 			}

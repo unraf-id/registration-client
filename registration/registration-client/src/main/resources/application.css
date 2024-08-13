@@ -561,7 +561,7 @@
 }
 
 .optionsButtonStyle {
-	
+
 }
 
 .reRegAnchorPane {
@@ -897,8 +897,9 @@ Working on new Css by taleev
 	-fx-prompt-text-fill: #a0a0a0;
 	-fx-font-size: 1.2em;
 	-fx-text-fill: #000000;
+	-fx-font-weight: bold;
+    -fx-opacity: 0.5;
 }
-
 .settingsTextField {
 	-fx-border-width: 0.0 0.0 2.0 0.0;
 	-fx-border-color: #8f898c;
@@ -940,17 +941,21 @@ Working on new Css by taleev
 .demoGraphicFieldLabelOnType {
 	-fx-background-color: #ffffff;
 	-fx-border-width: 0.0;
-	-fx-text-fill: #22A8C9;
+	-fx-text-fill: #000000;
 	-fx-prompt-text-fill: #000000;
-	-fx-font-size: 1em;
+	-fx-font-size: 1.3em;
+    -fx-opacity: 0.5;
+    -fx-font-weight: bold;
 }
 
 .demoGraphicFieldLabel {
 	-fx-background-color: #ffffff;
 	-fx-border-width: 0.0;
 	-fx-text-fill: #666666;
-	-fx-font-size: 1em;
+	-fx-font-size: 1.3em;
 	-fx-min-width: 6em;
+	-fx-opacity: 0.9;
+	-fx-font-weight: bold;
 }
 
 .paginationLabel {
@@ -1009,7 +1014,9 @@ Working on new Css by taleev
 	-fx-border-width: 0.0 0.0 1.0 0.0;
 	-fx-background-color: #FFFFFF;
 	-fx-text-fill: #000000;
-	-fx-font-size: 1.2em;
+	-fx-font-size: 1.3em;
+	-fx-font-weight: bold;
+	-fx-opacity: 0.5;
 }
 
 .demoGraphicTextFieldOnType:focused {
@@ -1046,7 +1053,7 @@ Working on new Css by taleev
 
 .loginCombobox {
 	-fx-background-color: #ffffff;
-	-fx-font-size: 14.0px;	
+	-fx-font-size: 14.0px;
 	-fx-pref-height: 35.0px;
 	-fx-pref-width: 312.0px;
 	-fx-border-width: 0.0 0.0 2.0 0.0;
@@ -1061,7 +1068,7 @@ Working on new Css by taleev
 
 .filterCombobox {
 	-fx-background-color: #ffffff;
-	-fx-font-size: 14.0px;	
+	-fx-font-size: 14.0px;
 	-fx-pref-height: 35.0px;
 	-fx-pref-width: 240.0px;
 	-fx-border-width: 0.0 0.0 0.0 0.0;
@@ -1490,7 +1497,7 @@ Working on new Css by taleev
 }
 
 /*
- *	rejection page 
+ *	rejection page
  */
 .rejectionPageHeader {
 	-fx-background-color: #FFFFFF;
@@ -2084,7 +2091,7 @@ Working on new Css by taleev
 
 .deviceDetailsHBox {
 	-fx-border-color:#808080;
-	-fx-border-width: 1; 
+	-fx-border-width: 1;
 	-fx-border-style: solid;
 }
 
