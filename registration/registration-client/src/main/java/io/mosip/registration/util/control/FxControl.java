@@ -125,7 +125,6 @@ public abstract class FxControl  {
 	 * Disable the field
 	 */
 	public void disable(Node node, boolean isDisable) {
-		node.setStyle("-fx-font-weight: bold;");
 		node.setDisable(isDisable);
 	}
 

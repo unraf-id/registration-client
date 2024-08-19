@@ -1,5 +1,4 @@
 package io.mosip.registration.controller;
-import io.mosip.kernel.core.idvalidator.exception.InvalidIDException;
 import io.mosip.kernel.core.idvalidator.spi.PridValidator;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.registration.config.AppConfig;
@@ -224,6 +223,9 @@ public class GenericController<uiFieldDTO> extends BaseController {
 		return hBox;
 	}
 	protected void executePreRegFetchTask(TextField textField) {
+		textField.textProperty().addListener((observable, oldValue, newValue) -> {
+			next.setDisable(true);
+		});
 		genericScreen.setDisable(true);
 		progressIndicator.setVisible(true);
 
@@ -259,9 +261,13 @@ public class GenericController<uiFieldDTO> extends BaseController {
 									tabPane.setId(preRegId);
 									getRegistrationDTOFromSession().setRegistrationId(preRegId);
 								} else if (responseDTO.getErrorResponseDTOs() != null) {
+									clearAllFieldData();
+									next.setDisable(true);
 									generateAlertLanguageSpecific(RegistrationConstants.ERROR, RegistrationConstants.PRE_REG_TO_GET_PACKET_ERROR);
 								}
 							} else {
+								clearAllFieldData();
+								next.setDisable(true);
 								generateAlertLanguageSpecific(RegistrationConstants.ERROR, RegistrationUIConstants.getMessageLanguageSpecific(INVALID_UNRAF_ID));
 							}
 						});
@@ -286,6 +292,36 @@ public class GenericController<uiFieldDTO> extends BaseController {
 				genericScreen.setDisable(false);
 				progressIndicator.setVisible(false);
 			}
+		});
+	}
+	private void clearAllFieldData() {
+		GenericController genericController = ClientApplication.getApplicationContext().getBean(GenericController.class);
+		genericController.refreshFields();
+
+		orderedScreens.values().forEach(screenDTO -> {
+
+			screenDTO.getFields().forEach(field -> {
+
+				FxControl fxControl = getFxControl(field.getId());
+				if (fxControl != null) {
+
+					switch (fxControl.getUiSchemaDTO().getType()) {
+
+						case "biometricsType":
+
+							break;
+
+						case "documentType":
+							fxControl.selectAndSet(null);
+							break;
+
+						default:
+							fxControl.selectAndSet(null);
+							fxControl.setData(null);
+							break;
+					}
+				}
+			});
 		});
 	}
 

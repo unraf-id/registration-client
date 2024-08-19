@@ -897,8 +897,7 @@ Working on new Css by taleev
 	-fx-prompt-text-fill: #a0a0a0;
 	-fx-font-size: 1.2em;
 	-fx-text-fill: #000000;
-	-fx-font-weight: bold;
-    -fx-opacity: 0.5;
+    -fx-opacity: 0.9;
 }
 .settingsTextField {
 	-fx-border-width: 0.0 0.0 2.0 0.0;
@@ -944,8 +943,7 @@ Working on new Css by taleev
 	-fx-text-fill: #000000;
 	-fx-prompt-text-fill: #000000;
 	-fx-font-size: 1.3em;
-    -fx-opacity: 0.5;
-    -fx-font-weight: bold;
+    -fx-opacity: 0.6;
 }
 
 .demoGraphicFieldLabel {
@@ -954,8 +952,7 @@ Working on new Css by taleev
 	-fx-text-fill: #666666;
 	-fx-font-size: 1.3em;
 	-fx-min-width: 6em;
-	-fx-opacity: 0.9;
-	-fx-font-weight: bold;
+	-fx-opacity: 1.0;
 }
 
 .paginationLabel {
@@ -1014,9 +1011,8 @@ Working on new Css by taleev
 	-fx-border-width: 0.0 0.0 1.0 0.0;
 	-fx-background-color: #FFFFFF;
 	-fx-text-fill: #000000;
-	-fx-font-size: 1.3em;
-	-fx-font-weight: bold;
-	-fx-opacity: 0.5;
+	-fx-font-size: 1.2em;
+	-fx-opacity: 1.0;
 }
 
 .demoGraphicTextFieldOnType:focused {
@@ -1963,7 +1959,6 @@ Working on new Css by taleev
 	-fx-padding: 0.0em 0.0em 0.0em 2.0em;
 }
 /* Header Page design Ends Here */
-
 /* Home page design starts here */
 .homeContent {
 /*	-fx-background-image: url(images/pexels-photo.png);*/
