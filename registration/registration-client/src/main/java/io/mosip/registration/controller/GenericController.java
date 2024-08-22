@@ -1,5 +1,4 @@
 package io.mosip.registration.controller;
-import io.mosip.kernel.core.idvalidator.exception.InvalidIDException;
 import io.mosip.kernel.core.idvalidator.spi.PridValidator;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.registration.config.AppConfig;
@@ -49,6 +48,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import static io.mosip.registration.constants.RegistrationConstants.*;
+import static io.mosip.registration.constants.RegistrationUIConstants.INVALID_UNRAF_ID;
 
 /**
  * {@code GenericController} is to capture the demographic/demo/Biometric
@@ -127,7 +127,6 @@ public class GenericController<uiFieldDTO> extends BaseController {
 	public static Map<String, TreeMap<Integer, String>> hierarchyLevels = new HashMap<String, TreeMap<Integer, String>>();
 	public static Map<String, TreeMap<Integer, String>> currentHierarchyMap = new HashMap<String, TreeMap<Integer, String>>();
 	public static List<UiFieldDTO> fields = new ArrayList<>();
-
 	public GenericController() {
 	}
 
@@ -200,7 +199,8 @@ public class GenericController<uiFieldDTO> extends BaseController {
 		textField.setId("preRegistrationId");
 		textField.getStyleClass().add(TEXTFIELD_CLASS);
 		this.registrationNumberTextField = textField;
-
+		// Disable the "Continue" button by default
+		next.setDisable(true);
 		Button button = new Button();
 		button.setId("fetchBtn");
 		button.getStyleClass().add("demoGraphicPaneContentButton");
@@ -223,6 +223,9 @@ public class GenericController<uiFieldDTO> extends BaseController {
 		return hBox;
 	}
 	protected void executePreRegFetchTask(TextField textField) {
+		textField.textProperty().addListener((observable, oldValue, newValue) -> {
+			next.setDisable(true);
+		});
 		genericScreen.setDisable(true);
 		progressIndicator.setVisible(true);
 
@@ -238,37 +241,34 @@ public class GenericController<uiFieldDTO> extends BaseController {
 					@Override
 					protected Void call() {
 						Platform.runLater(() -> {
-							//boolean isValid = false;
-							//try {
-							//	isValid = pridValidatorImpl.validateId(textField.getText());
-							//} catch (InvalidIDException invalidIDException) { isValid = false; }
+							String preRegId = textField.getText();
+							// Validate the pre-registration ID format (8 digits)
+							boolean isValidFormat = preRegId.matches("\\d{8}");
+							if (isValidFormat) {
+								ResponseDTO responseDTO = preRegistrationDataSyncService.getPreRegistration(preRegId, false);
 
-							//if(!isValid) {
-							//	generateAlertLanguageSpecific(RegistrationConstants.ERROR, RegistrationUIConstants.PRE_REG_ID_NOT_VALID);
-							//	return;
-							//}
-							ResponseDTO responseDTO = preRegistrationDataSyncService.getPreRegistration(textField.getText(), false);
-
-							if (responseDTO.getErrorResponseDTOs() != null
-									&& !responseDTO.getErrorResponseDTOs().isEmpty()
-									&& responseDTO.getErrorResponseDTOs().get(0).getMessage() != null
-									&& responseDTO.getErrorResponseDTOs().get(0).getMessage()
-									.equalsIgnoreCase(RegistrationConstants.CONSUMED_PRID_ERROR_CODE)) {
-								generateAlertLanguageSpecific(RegistrationConstants.ERROR, RegistrationConstants.PRE_REG_CONSUMED_PACKET_ERROR);
-								return;
-							}
-
-							try {
-								loadPreRegSync(responseDTO);
 								if (responseDTO.getSuccessResponseDTO() != null) {
-									getRegistrationDTOFromSession().setPreRegistrationId(textField.getText());
-									getRegistrationDTOFromSession().setAppId(textField.getText());
-									TabPane tabPane = (TabPane) anchorPane.lookup(HASH+getRegistrationDTOFromSession().getRegistrationId());
-									tabPane.setId(textField.getText());
-									getRegistrationDTOFromSession().setRegistrationId(textField.getText());
+									// ID exists in the database, so enable the button
+									next.setDisable(false);
+									try {
+										loadPreRegSync(responseDTO);
+									} catch (RegBaseCheckedException e) {
+										e.printStackTrace();
+									}
+									getRegistrationDTOFromSession().setPreRegistrationId(preRegId);
+									getRegistrationDTOFromSession().setAppId(preRegId);
+									TabPane tabPane = (TabPane) anchorPane.lookup(HASH + getRegistrationDTOFromSession().getRegistrationId());
+									tabPane.setId(preRegId);
+									getRegistrationDTOFromSession().setRegistrationId(preRegId);
+								} else if (responseDTO.getErrorResponseDTOs() != null) {
+									clearAllFieldData();
+									next.setDisable(true);
+									generateAlertLanguageSpecific(RegistrationConstants.ERROR, RegistrationConstants.PRE_REG_TO_GET_PACKET_ERROR);
 								}
-							} catch (RegBaseCheckedException exception) {
-								generateAlertLanguageSpecific(RegistrationConstants.ERROR, RegistrationConstants.PRE_REG_TO_GET_PACKET_ERROR);
+							} else {
+								clearAllFieldData();
+								next.setDisable(true);
+								generateAlertLanguageSpecific(RegistrationConstants.ERROR, RegistrationUIConstants.getMessageLanguageSpecific(INVALID_UNRAF_ID));
 							}
 						});
 						return null;
@@ -276,7 +276,6 @@ public class GenericController<uiFieldDTO> extends BaseController {
 				};
 			}
 		};
-
 		progressIndicator.progressProperty().bind(taskService.progressProperty());
 		taskService.start();
 		taskService.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -293,6 +292,36 @@ public class GenericController<uiFieldDTO> extends BaseController {
 				genericScreen.setDisable(false);
 				progressIndicator.setVisible(false);
 			}
+		});
+	}
+	private void clearAllFieldData() {
+		GenericController genericController = ClientApplication.getApplicationContext().getBean(GenericController.class);
+		genericController.refreshFields();
+
+		orderedScreens.values().forEach(screenDTO -> {
+
+			screenDTO.getFields().forEach(field -> {
+
+				FxControl fxControl = getFxControl(field.getId());
+				if (fxControl != null) {
+
+					switch (fxControl.getUiSchemaDTO().getType()) {
+
+						case "biometricsType":
+
+							break;
+
+						case "documentType":
+							fxControl.selectAndSet(null);
+							break;
+
+						default:
+							fxControl.selectAndSet(null);
+							fxControl.setData(null);
+							break;
+					}
+				}
+			});
 		});
 	}
 
@@ -808,6 +837,7 @@ public class GenericController<uiFieldDTO> extends BaseController {
 			scrollPane.setId("scrollPane");
 			screenTab.setContent(scrollPane);
 			tabPane.getTabs().add(screenTab);
+			getRegistrationDTOFromSession().addDemographicField("selectedHandles","unrafId");
 		}
 
 		//Setting the Default Value

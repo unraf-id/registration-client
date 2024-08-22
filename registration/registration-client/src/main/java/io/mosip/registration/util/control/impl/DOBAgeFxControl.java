@@ -28,7 +28,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.geometry.Insets;
 
 /**
  * @author M1044402
@@ -259,11 +258,13 @@ public class DOBAgeFxControl extends FxControl {
 				this.uiFieldDTO.getId() + RegistrationConstants.MM + RegistrationConstants.TEXT_FIELD));
 		TextField dd = ((TextField) getField(
 				this.uiFieldDTO.getId() + RegistrationConstants.DD + RegistrationConstants.TEXT_FIELD));
-
+		TextField age = ((TextField) getField(
+				this.uiFieldDTO.getId() + RegistrationConstants.AGE_FIELD + RegistrationConstants.TEXT_FIELD));
 		if(data == null || ((String) data).trim().isEmpty()) {
 			yyyy.clear();
 			mm.clear();
 			dd.clear();
+			age.clear();
 			return;
 		}
 
