@@ -2093,13 +2093,13 @@ Working on new Css by taleev
 .operationalTitle {
 	-fx-text-fill: #005baa;
 	-fx-font-family: Roboto;
-	-fx-font-size: 16.0px;
+	-fx-font-size: 25.0px;
 }
 
 .operationalDetails {
 	-fx-text-fill: #005baa;
 	-fx-font-family: Roboto;
-	-fx-font-size: 10.0px;
+	-fx-font-size: 17.0px;
 }
 
 .operationalPaneDetailsPreReg {
