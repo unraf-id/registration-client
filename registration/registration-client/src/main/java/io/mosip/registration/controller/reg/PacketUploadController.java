@@ -114,9 +114,6 @@ public class PacketUploadController extends BaseController implements Initializa
 	private TableColumn<PacketStatusVO, Boolean> slno;
 
 	@FXML
-	private Button saveToDevice;
-
-	@FXML
 	private Button uploadBtn;
 
 	@FXML
@@ -375,7 +372,6 @@ public class PacketUploadController extends BaseController implements Initializa
 		
 		checkBoxColumn.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
 		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>(RegistrationConstants.PACKET_UPLOAD_FILE));
-		regType.setCellValueFactory(new PropertyValueFactory<>("packetStatus"));
 		regDate.setCellValueFactory(new PropertyValueFactory<>(RegistrationConstants.PACKET_UPLOAD_DATE));
 		slno.setCellValueFactory(new PropertyValueFactory<>(RegistrationConstants.PACKET_UPLOAD_SNO));
 		clientStatus.setCellValueFactory(new PropertyValueFactory<>(RegistrationConstants.PACKET_CLIENT_STATUS));
@@ -578,7 +574,6 @@ public class PacketUploadController extends BaseController implements Initializa
 		filterField.setDisable(allApprovedPackets.isEmpty());
 		table.setDisable(allApprovedPackets.isEmpty());
 		table.getColumns().forEach(column -> column.setReorderable(false));
-		saveToDevice.setVisible(!allApprovedPackets.isEmpty());
 		uploadBtn.setVisible(!toBeUploadedPacketStatusDTOs.isEmpty());
 		selectAllCheckBox.setSelected(false);
 		clientStatusComboBox.setDisable(allApprovedPackets.isEmpty());

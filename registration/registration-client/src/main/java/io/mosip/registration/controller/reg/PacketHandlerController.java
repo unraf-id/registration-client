@@ -836,6 +836,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 		ColumnConstraints columnConstraint2 = new ColumnConstraints();
 		columnConstraint2.setPercentWidth(90);
 		gridPane.getColumnConstraints().addAll(columnConstraint1, columnConstraint2);
+		gridPane.setHgap(20);
 		gridPane.setOnMouseClicked(event -> {
 			selectLanguage(event);
 		});
@@ -847,8 +848,8 @@ public class PacketHandlerController extends BaseController implements Initializ
 		imageView.setId(processSpecDto.getId()+"_img");
 		imageView.setPreserveRatio(true);
 		imageView.setPickOnBounds(true);
-		imageView.setFitHeight(30);
-		imageView.setFitWidth(30);
+		imageView.setFitHeight(50);
+		imageView.setFitWidth(42);
 		try {
 			imageView.setImage(getImage(processSpecDto.getIcon(), true));
 		} catch (RegBaseCheckedException e) {

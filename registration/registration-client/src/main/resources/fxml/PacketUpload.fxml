@@ -60,7 +60,6 @@
                                <TableColumn fx:id="slno" editable="false" prefWidth="${tableContainer.width*5/100}" resizable="false" sortable="false" styleClass="tableId" text="%slno" />
                               <TableColumn fx:id="fileNameColumn" editable="false" prefWidth="${tableContainer.width*17/100}" resizable="false" styleClass="tableId" text="%applicationId" />
                               <TableColumn fx:id="regDate" editable="false" prefWidth="${tableContainer.width*14/100}" resizable="false" styleClass="tableId" text="%registrationDate" />
-                              <TableColumn fx:id="regType" editable="false" prefWidth="${tableContainer.width*13/100}" resizable="false" styleClass="tableId" text="%registrationType" />
                               <TableColumn fx:id="clientStatus" editable="false" prefWidth="${tableContainer.width*15/100}" resizable="false" styleClass="tableId" text="%clientStatus" />
                               <TableColumn fx:id="serverStatus" editable="false" prefWidth="${tableContainer.width*17/100}" resizable="false" styleClass="tableId" text="%serverStatus" />
                               <TableColumn fx:id="operatorId" editable="false" prefWidth="${tableContainer.width*14/100}" resizable="false" styleClass="tableId" text="%operatorId" />
@@ -79,11 +78,6 @@
                               <Button fx:id="clearFilters" mnemonicParsing="false" styleClass="contiuneButton" text="%clearFilters" />
                            </children>
                         </HBox>
-                        <Label styleClass="headerLabel" text="%saveToDeviceLable" GridPane.rowIndex="3">
-                           <padding>
-                              <Insets bottom="-15.0" left="2.0" />
-                           </padding>
-                        </Label>
                         <StackPane fx:id="progressIndicatorPane" prefHeight="150.0" prefWidth="200.0" visible="false" GridPane.rowIndex="2">
                            <children>
                               <ProgressIndicator fx:id="progressIndicator" progress="0.0" />
@@ -118,7 +112,6 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="2">
                      <children>
-                        <Button fx:id="saveToDevice" mnemonicParsing="false" onAction="#packetExport" styleClass="contiuneButton" text="%saveToDevice" />
                         <Button fx:id="uploadBtn" mnemonicParsing="false" onAction="#syncAndUploadPacket" styleClass="contiuneButton" text="%upload" />
                      </children>
                      <GridPane.margin>
