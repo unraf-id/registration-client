@@ -245,7 +245,7 @@ public class GenericController<uiFieldDTO> extends BaseController {
 							// Validate the pre-registration ID format (8 digits)
 							boolean isValidFormat = preRegId.matches("\\d{8}");
 							if (isValidFormat) {
-								ResponseDTO responseDTO = preRegistrationDataSyncService.getPreRegistration(preRegId, false);
+								ResponseDTO responseDTO = preRegistrationDataSyncService.getPreRegistration(preRegId, true);
 
 								if (responseDTO.getSuccessResponseDTO() != null) {
 									// ID exists in the database, so enable the button
