@@ -77,7 +77,8 @@ public class GenericController<uiFieldDTO> extends BaseController {
 	private static final String CONTROLTYPE_DOB = "date";
 	private static final String CONTROLTYPE_DOB_AGE = "ageDate";
 	private static final String CONTROLTYPE_HTML = "html";
-
+	private String rid = "";
+	private boolean isUpdate=false;
 	/**
 	 * Top most Grid pane in FXML
 	 */
@@ -246,7 +247,6 @@ public class GenericController<uiFieldDTO> extends BaseController {
 							boolean isValidFormat = preRegId.matches("\\d{8}");
 							if (isValidFormat) {
 								ResponseDTO responseDTO = preRegistrationDataSyncService.getPreRegistration(preRegId, true);
-
 								if (responseDTO.getSuccessResponseDTO() != null) {
 									// ID exists in the database, so enable the button
 									next.setDisable(false);
@@ -256,10 +256,18 @@ public class GenericController<uiFieldDTO> extends BaseController {
 										e.printStackTrace();
 									}
 									getRegistrationDTOFromSession().setPreRegistrationId(preRegId);
-									getRegistrationDTOFromSession().setAppId(preRegId);
-									TabPane tabPane = (TabPane) anchorPane.lookup(HASH + getRegistrationDTOFromSession().getRegistrationId());
-									tabPane.setId(preRegId);
-									getRegistrationDTOFromSession().setRegistrationId(preRegId);
+									getRegistrationDTOFromSession().addDemographicField("selectedHandles","unrafId");
+									if(isUpdate){
+										getRegistrationDTOFromSession().setAppId(rid);
+										TabPane tabPane = (TabPane) anchorPane.lookup(HASH + getRegistrationDTOFromSession().getRegistrationId());
+										tabPane.setId(rid);
+										getRegistrationDTOFromSession().setRegistrationId(rid);
+									}else {
+										getRegistrationDTOFromSession().setAppId(preRegId);
+										TabPane tabPane = (TabPane) anchorPane.lookup(HASH + getRegistrationDTOFromSession().getRegistrationId());
+										tabPane.setId(preRegId);
+										getRegistrationDTOFromSession().setRegistrationId(preRegId);
+									}
 								} else if (responseDTO.getErrorResponseDTOs() != null) {
 									clearAllFieldData();
 									next.setDisable(true);
@@ -731,11 +739,14 @@ public class GenericController<uiFieldDTO> extends BaseController {
 		addNavigationButtons(processSpecDto);
 		return tabPane;
 	}
-
 	public void populateScreens() throws Exception {
 		RegistrationDTO registrationDTO = getRegistrationDTOFromSession();
 		LOGGER.debug("Populating Dynamic screens for process : {}", registrationDTO.getProcessId());
 		initialize(registrationDTO);
+		if(registrationDTO.getProcessId().equalsIgnoreCase("UPDATE")){
+			rid=registrationDTO.getRegistrationId();
+			isUpdate=true;
+		}
 		ProcessSpecDto processSpecDto = getProcessSpec(registrationDTO.getProcessId(), registrationDTO.getIdSchemaVersion());
 		getScreens(processSpecDto.getScreens());
 		TabPane tabPane = createTabPane(processSpecDto);
@@ -837,7 +848,6 @@ public class GenericController<uiFieldDTO> extends BaseController {
 			scrollPane.setId("scrollPane");
 			screenTab.setContent(scrollPane);
 			tabPane.getTabs().add(screenTab);
-			getRegistrationDTOFromSession().addDemographicField("selectedHandles","unrafId");
 		}
 
 		//Setting the Default Value

@@ -47,7 +47,7 @@ import javafx.scene.layout.RowConstraints;
 
 /**
  * UpdateUINController Class.
- * 
+ *
  * @author Mahesh Kumar
  *
  */
@@ -78,14 +78,17 @@ public class UpdateUINController extends BaseController implements Initializable
 	@Autowired
 	private GenericController genericController;
 
+	@Autowired
+	private UnrafIdValidatorImpl unrafIdValidator;
+
 	@FXML
 	FlowPane parentFlowPane;
-	
+
 	@FXML
 	private HBox demographicHBox;
-	
+
 	@FXML
-	private ScrollPane scrollPane;	
+	private ScrollPane scrollPane;
 
 	private ObservableList<Node> parentFlow;
 
@@ -98,7 +101,7 @@ public class UpdateUINController extends BaseController implements Initializable
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
 	 * java.util.ResourceBundle)
 	 */
@@ -107,7 +110,7 @@ public class UpdateUINController extends BaseController implements Initializable
 
 		setImage(backImageView, RegistrationConstants.ARROW_LEFT_IMG);
 		setImage(continueImageView, RegistrationConstants.ARROW_RIGHT_IMG);
-		
+
 		fxUtils = FXUtils.getInstance();
 		checkBoxKeeper = new HashMap<>();
 
@@ -126,19 +129,11 @@ public class UpdateUINController extends BaseController implements Initializable
 				}
 			});
 		});
-		
+
 		scrollPane.prefWidthProperty().bind(demographicHBox.widthProperty());
-		
-		parentFlow = parentFlowPane.getChildren();
-		groupedMap.forEach((groupName, list) -> {
-			GridPane checkBox = addCheckBox(groupName);
-			if (checkBox != null) {
-				parentFlow.add(checkBox);
-			}
-		});
 
 		try {
-			
+
 			backBtn.hoverProperty().addListener((ov, oldValue, newValue) -> {
 				if (newValue) {
 					setImage(backImageView, RegistrationConstants.BACK_FOCUSED_IMG);
@@ -160,7 +155,7 @@ public class UpdateUINController extends BaseController implements Initializable
 		checkBox.getStyleClass().add(RegistrationConstants.updateUinCheckBox);
 		fxUtils.listenOnSelectedCheckBox(checkBox);
 		checkBoxKeeper.put(groupName, checkBox);
-		
+
 		GridPane gridPane = new GridPane();
 		gridPane.setPrefWidth(400);
 		gridPane.setPrefHeight(40);
@@ -220,17 +215,11 @@ public class UpdateUINController extends BaseController implements Initializable
 					selectedFieldGroups.add(key);
 				}
 			}
-
-			if(selectedFieldGroups.isEmpty()) {
-				generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.UPDATE_UIN_SELECTION_ALERT));
-				return;
-			}
-
-			if (uinValidatorImpl.validateId(uinId.getText()) && !selectedFieldGroups.isEmpty()) {
-				getRegistrationDTOFromSession().addDemographicField("UIN", uinId.getText());
-				getRegistrationDTOFromSession().setUpdatableFieldGroups(selectedFieldGroups);
+			if (unrafIdValidator.validateId(uinId.getText())) {
+				getRegistrationDTOFromSession().addDemographicField("unrafId", uinId.getText());
+				getRegistrationDTOFromSession().setUpdatableFieldGroups(new ArrayList<>(groupedMap.keySet()));
 				getRegistrationDTOFromSession().setUpdatableFields(new ArrayList<>());
-				getRegistrationDTOFromSession().setBiometricMarkedForUpdate(selectedFieldGroups.contains(RegistrationConstants.BIOMETRICS_GROUP) ? true : false);
+				getRegistrationDTOFromSession().setBiometricMarkedForUpdate(true);
 
 				Parent createRoot = BaseController.load(
 						getClass().getResource(RegistrationConstants.CREATE_PACKET_PAGE),
@@ -239,6 +228,8 @@ public class UpdateUINController extends BaseController implements Initializable
 				getScene(createRoot).setRoot(createRoot);
 				genericController.populateScreens();
 				return;
+			}else {
+				generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.getMessageLanguageSpecific(RegistrationUIConstants.UPDATE_UNRAFID_VALIDATION_ALERT));
 			}
 		} catch (InvalidIDException invalidIdException) {
 			LOGGER.error(invalidIdException.getMessage(), invalidIdException);

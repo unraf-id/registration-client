@@ -1650,6 +1650,7 @@ Working on new Css by taleev
 	-fx-border-color: #005baa;
 	-fx-background-insets: 0.0, 0.0 0.0 1.0 0.0;
 	-fx-border-width: 0.0 0.0 1.0 0.0;
+	-fx-font-size: 22px;
 }
 
 .uinUpdateTextFiledStyle:focused {
