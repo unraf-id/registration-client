@@ -319,7 +319,6 @@ public class TextFieldFxControl extends FxControl {
 					setFocusOnField(event, keyBoard, langCode, textField);
 				});
 			}
-			imagesHBox.getChildren().add(keyBoardImgView);
 			textFieldHBox.getChildren().add(imagesHBox);
 		}
 

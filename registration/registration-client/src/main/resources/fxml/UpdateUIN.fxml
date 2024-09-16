@@ -71,7 +71,7 @@
                               </GridPane>
                               <GridPane GridPane.rowIndex="2">
                                  <children>
-                                    <Label styleClass="uinUpdateLabels" text="%selecttoupdate" />
+                                    <Label styleClass="uinUpdateLabels" text="%selecttoupdate" style="-fx-font-size: 20px;"/>
                                  </children>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
@@ -115,7 +115,7 @@
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
-              <children> 
+              <children>
                   <fx:include fx:id="headerParentBorder" prefHeight="${header.height}" prefWidth="${header.width}" source="Header.fxml" />
                </children>
             </GridPane>

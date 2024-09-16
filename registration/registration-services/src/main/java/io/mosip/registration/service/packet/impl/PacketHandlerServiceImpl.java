@@ -91,7 +91,7 @@ import org.springframework.util.CollectionUtils;
  * The implementation class of {@link PacketHandlerService} to handle the
  * registration data to create packet out of it and save the encrypted packet
  * data in the configured local system
- * 
+ *
  * @author Balaji Sridharanha
  * @since 1.0.0
  *
@@ -165,7 +165,7 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * io.mosip.registration.service.packet.PacketHandlerService#handle(io.mosip.
 	 * registration.dto.RegistrationDTO)
@@ -189,9 +189,9 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 		if (registrationDTO.getAdditionalInfoReqId() != null) {
 			registrationDTO.setAppId(registrationDTO.getAdditionalInfoReqId().split("-")[0]);
 		}
-		
+
 		registrationDTO.setRegistrationId(registrationDTO.getAppId());
-		
+
 		Map<String, String> metaInfoMap = new LinkedHashMap<>();
 		try {
 			SchemaDto schema = identitySchemaService.getIdentitySchema(registrationDTO.getIdSchemaVersion());
@@ -214,14 +214,14 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 			String refId = String.valueOf(ApplicationContext.map().get(RegistrationConstants.USER_CENTER_ID))
 					.concat(RegistrationConstants.UNDER_SCORE)
 					.concat(String.valueOf(ApplicationContext.map().get(RegistrationConstants.USER_STATION_ID)));
-			
+
 			LOGGER.debug("Requesting packet manager to persist packet");
 			List<PacketInfo> packetInfo = packetWriter.persistPacket(registrationDTO.getRegistrationId(),
 					String.valueOf(registrationDTO.getIdSchemaVersion()), schema.getSchemaJson(), source.toUpperCase(),
 					registrationDTO.getProcessId().toUpperCase(),
 					registrationDTO.getAppId(),
 					refId, true);
-			
+
 			if (!CollectionUtils.isEmpty(packetInfo)) {
 				registrationDTO.setPacketId(packetInfo.get(0).getId());
 			}
@@ -394,7 +394,7 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 			switch (registrationDTO.getFlowType()) {
 				case UPDATE:
 					if (demographics.get(fieldName) != null && (registrationDTO.getUpdatableFields().contains(fieldName) ||
-							fieldName.equals("UIN")))
+							fieldName.equals("UIN")|| fieldName.equals("unrafId")))
 						setField(registrationDTO.getRegistrationId(), fieldName, demographics.get(fieldName),
 								registrationDTO.getProcessId().toUpperCase(), source);
 					break;
@@ -571,12 +571,12 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 		document.setRefNumber(documentDto.getRefNumber());
 		return document;
 	}
-	
+
 	@Override
 	public List<Registration> getAllRegistrations() {
 		return registrationDAO.getAllRegistrations();
 	}
-	
+
 	@Override
 	public List<PacketStatusDTO> getAllPackets() {
 		LOGGER.info("Fetching all the packets that are registered");
