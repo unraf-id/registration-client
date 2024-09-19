@@ -153,6 +153,19 @@ public class GenericController<uiFieldDTO> extends BaseController {
 		anchorPane.prefHeightProperty().bind(genericScreen.heightProperty());
 		fields = getAllFields(registrationDTO.getProcessId(), registrationDTO.getIdSchemaVersion());
 		additionalInfoReqIdScreenOrder = null;
+		if (registrationDTO.getProcessId().equalsIgnoreCase("NEW")) {
+
+			rid = registrationDTO.getPreRegistrationId();
+
+			isUpdate = false;
+
+		} else if (registrationDTO.getProcessId().equalsIgnoreCase("UPDATE")) {
+
+			rid = registrationDTO.getRegistrationId();
+
+			isUpdate = true;
+
+		}
 	}
 
 
@@ -743,10 +756,6 @@ public class GenericController<uiFieldDTO> extends BaseController {
 		RegistrationDTO registrationDTO = getRegistrationDTOFromSession();
 		LOGGER.debug("Populating Dynamic screens for process : {}", registrationDTO.getProcessId());
 		initialize(registrationDTO);
-		if(registrationDTO.getProcessId().equalsIgnoreCase("UPDATE")){
-			rid=registrationDTO.getRegistrationId();
-			isUpdate=true;
-		}
 		ProcessSpecDto processSpecDto = getProcessSpec(registrationDTO.getProcessId(), registrationDTO.getIdSchemaVersion());
 		getScreens(processSpecDto.getScreens());
 		TabPane tabPane = createTabPane(processSpecDto);
