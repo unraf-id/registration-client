@@ -343,7 +343,13 @@ public class DateValidation extends BaseController {
 				if (isValid) {
 					LocalDate afterMaxDays = LocalDate.now().plusDays(maxDays);
 					LocalDate beforeMinDays = LocalDate.now().plusDays(minDays);
-					isValid = (localDate.isAfter(beforeMinDays) && localDate.isBefore(afterMaxDays));
+					if (minDays > 0 && maxDays > 0) {
+						isValid = (localDate.isAfter(beforeMinDays) && localDate.isBefore(afterMaxDays));
+					} else if (minDays > 0 && maxDays == 0) {
+						isValid = (localDate.isAfter(beforeMinDays));
+					} else if (minDays == 0 && maxDays > 0) {
+						isValid = (localDate.isBefore(afterMaxDays));
+					}
 				}
 			}
 			resetFieldStyleClass(parentPane, fieldId, isValid ? null : getErrorMessage(validator, RegistrationConstants.INVALID_DATE_LIMIT,
