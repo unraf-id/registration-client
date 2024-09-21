@@ -9,14 +9,10 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import io.mosip.registration.dto.schema.UiFieldDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -435,23 +431,39 @@ public class PacketHandlerController extends BaseController implements Initializ
 			switch (flowType) {
 				case NEW:
 				case LOST:
+				case UPDATE:
 				case CORRECTION:
 					Parent createRoot = getRoot(RegistrationConstants.CREATE_PACKET_PAGE);
 					getScene(createRoot).setRoot(createRoot);
 					getScene(createRoot).getStylesheets().add(ClassLoader.getSystemClassLoader().getResource(getCssName()).toExternalForm());
 					if(registrationController.createRegistrationDTOObject(processId)) {
+						if (flowType.equals(FlowType.UPDATE)) {
+							Map<String, List<UiFieldDTO>> groupedMap = new HashMap<>();
+							processSpecDto.getScreens().forEach(screen -> {
+								screen.getFields().forEach(field -> {
+									if(field.getGroup() != null) {
+										List<UiFieldDTO> fields = groupedMap.getOrDefault(field.getGroup(), new ArrayList<>());
+										fields.add(field);
+										groupedMap.put(field.getGroup(), fields);
+									}
+								});
+							});
+							getRegistrationDTOFromSession().setUpdatableFieldGroups(new ArrayList<>(groupedMap.keySet()));
+							getRegistrationDTOFromSession().setUpdatableFields(new ArrayList<>());
+							getRegistrationDTOFromSession().setBiometricMarkedForUpdate(true);
+						}
 						genericController.populateScreens();
 						return;
 					}
 					break;
-				case UPDATE:
-					if(registrationController.createRegistrationDTOObject(processId)) {
-						Parent root = BaseController.load(getClass().getResource(RegistrationConstants.UIN_UPDATE),
-								applicationContext.getBundle(registrationController.getSelectedLangList().get(0), RegistrationConstants.LABELS));
-						getScene(root);
-						LOGGER.info(PACKET_HANDLER, APPLICATION_NAME, APPLICATION_ID, "Loading Update UIN screen ended.");
-						return;
-					}
+//				case UPDATE:
+//					if(registrationController.createRegistrationDTOObject(processId)) {
+//						Parent root = BaseController.load(getClass().getResource(RegistrationConstants.UIN_UPDATE),
+//								applicationContext.getBundle(registrationController.getSelectedLangList().get(0), RegistrationConstants.LABELS));
+//						getScene(root);
+//						LOGGER.info(PACKET_HANDLER, APPLICATION_NAME, APPLICATION_ID, "Loading Update UIN screen ended.");
+//						return;
+//					}
 			}
 
 		} catch (Exception e) {
