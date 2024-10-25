@@ -263,11 +263,6 @@ public class GenericController<uiFieldDTO> extends BaseController {
 								if (responseDTO.getSuccessResponseDTO() != null) {
 									// ID exists in the database, so enable the button
 									next.setDisable(false);
-									try {
-										loadPreRegSync(responseDTO);
-									} catch (RegBaseCheckedException e) {
-										e.printStackTrace();
-									}
 									getRegistrationDTOFromSession().setPreRegistrationId(preRegId);
 									getRegistrationDTOFromSession().addDemographicField("selectedHandles","unrafId");
 									if(isUpdate){
@@ -280,6 +275,11 @@ public class GenericController<uiFieldDTO> extends BaseController {
 										TabPane tabPane = (TabPane) anchorPane.lookup(HASH + getRegistrationDTOFromSession().getRegistrationId());
 										tabPane.setId(preRegId);
 										getRegistrationDTOFromSession().setRegistrationId(preRegId);
+									}
+									try {
+										loadPreRegSync(responseDTO);
+									} catch (RegBaseCheckedException e) {
+										e.printStackTrace();
 									}
 								} else if (responseDTO.getErrorResponseDTOs() != null) {
 									clearAllFieldData();
