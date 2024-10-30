@@ -194,7 +194,7 @@ public class RegistrationUIConstants {
 	public static final String THRESHOLD = "THRESHOLD";
 	public static final String INVALID_DATE = "INVALID_DATE";
 	public static final String INVALID_YEAR = "INVALID_YEAR";
-	public static final String INVALID_UNRAF_ID="INVALID_ID";
+	public static final String INVALID_UNRAF_ID="ID UNIVERSITARIO NO VÁLIDO";
 	public static final String FUTURE_DOB = "FUTURE_DOB";
 	public static final String INVALID_AGE = "INVALID_AGE";
 	public static final String INVALID_MONTH = "INVALID_MONTH";

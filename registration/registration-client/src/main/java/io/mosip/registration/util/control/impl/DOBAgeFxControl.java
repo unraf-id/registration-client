@@ -109,6 +109,7 @@ public class DOBAgeFxControl extends FxControl {
 				resourceBundle.getString("ageOrDOBField"), RegistrationConstants.DEMOGRAPHIC_FIELD_LABEL, true, dobHBox.getWidth());
 		label.setMinWidth(Region.USE_PREF_SIZE);
 		label.setAlignment(Pos.CENTER);
+		label.setStyle("-fx-font-size:11px;");
 		dobHBox.getChildren().add(label);
 
 		/** Add Age Field */
