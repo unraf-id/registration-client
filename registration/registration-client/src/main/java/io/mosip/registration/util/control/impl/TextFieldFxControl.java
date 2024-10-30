@@ -334,11 +334,18 @@ public class TextFieldFxControl extends FxControl {
 		/** Text Field */
 		TextField textField = new TextField();
 		textField.setId(id);
-		textField.setPromptText(io.mosip.registration.context.ApplicationContext
-				.getBundle(langCode, RegistrationConstants.LABELS).getString("language"));
+		if ("spa".equals(langCode)) {
+
+			textField.setPromptText("español");
+
+		} else {
+			textField.setPromptText(io.mosip.registration.context.ApplicationContext
+
+					.getBundle(langCode, RegistrationConstants.LABELS).getString("language"));
+
+		}
 		textField.getStyleClass().add(RegistrationConstants.DEMOGRAPHIC_TEXTFIELD);
 		textField.setDisable(isDisable);
-
 		return textField;
 	}
 
